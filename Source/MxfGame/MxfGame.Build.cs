@@ -22,7 +22,9 @@ public class MxfGame : ModuleRules
 				"InputCore",
 				"GameplayTags",
 				"GameplayTasks",
-				"GameplayAbilities"
+				"GameplayAbilities",
+				"ModularGameplay",
+				"ModularGameplayActors"
 				}
 			);
 
