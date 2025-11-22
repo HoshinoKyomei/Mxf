@@ -13,7 +13,6 @@ class UObject;
 class UWorld;
 struct FGameplayEffectSpec;
 
-
 /**
  * This macro defines a set of helper functions for accessing and initializing attributes.
  *

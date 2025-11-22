@@ -6,6 +6,8 @@
 #include "Abilities/GameplayAbility.h"
 #include "BaseGameplayAbility.generated.h"
 
+class UObject;
+
 /**
  * 
  */

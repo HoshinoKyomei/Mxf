@@ -10,6 +10,7 @@ class APawn;
 class UBaseAbilitySet;
 // class UBaseAbilityTagRelationshipMapping;
 // class UBaseInputConfig;
+class UObject;
 
 /**
  * UBasePawnData

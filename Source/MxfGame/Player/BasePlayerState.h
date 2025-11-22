@@ -17,6 +17,7 @@ class FName;
 class UAbilitySystemComponent;
 class UBaseAbilitySystemComponent;
 class UBasePawnData;
+class UObject;
 struct FFrame;
 struct FGameplayTag;
 

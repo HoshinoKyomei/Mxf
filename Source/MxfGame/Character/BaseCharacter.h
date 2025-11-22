@@ -6,6 +6,8 @@
 #include "ModularCharacter.h"
 #include "BaseCharacter.generated.h"
 
+class UObject;
+
 /**
  * ABaseCharacter
  *

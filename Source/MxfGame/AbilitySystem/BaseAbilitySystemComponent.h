@@ -6,6 +6,8 @@
 #include "AbilitySystemComponent.h"
 #include "BaseAbilitySystemComponent.generated.h"
 
+class UObject;
+
 /**
  * UBaseAbilitySystemComponent
  *

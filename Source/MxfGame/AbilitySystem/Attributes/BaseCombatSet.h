@@ -8,6 +8,8 @@
 
 #include "BaseCombatSet.generated.h"
 
+class UObject;
+struct FFrame;
 
 /**
  * ULyraCombatSet

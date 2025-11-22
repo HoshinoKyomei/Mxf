@@ -6,6 +6,8 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "BaseCharacterMovementComponent.generated.h"
 
+class UObject;
+
 /**
  * 
  */

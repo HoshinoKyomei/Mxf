@@ -9,6 +9,8 @@
 
 #include "BaseHealthSet.generated.h"
 
+class UObject;
+struct FFrame;
 
 MXFGAME_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Gameplay_Damage);
 MXFGAME_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Gameplay_DamageImmunity);
