@@ -7,6 +7,10 @@
 #include "AbilitySystem/BaseAbilitySystemComponent.h"
 #include "Engine/World.h"
 #include "GameplayEffectExtension.h"
+#include "Messages/BaseVerbMessage.h"
+#include "GameFramework/GameplayMessageSubsystem.h"
+
+#include UE_INLINE_GENERATED_CPP_BY_NAME(BaseHealthSet)
 
 UE_DEFINE_GAMEPLAY_TAG(TAG_Gameplay_Damage, "Gameplay.Damage");
 UE_DEFINE_GAMEPLAY_TAG(TAG_Gameplay_DamageImmunity, "Gameplay.DamageImmunity");
@@ -124,6 +128,21 @@ void UBaseHealthSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackD
 	if (Data.EvaluatedData.Attribute == GetDamageAttribute())
 	{
 		// Send a standardized verb message that other systems can observe
+		if (Data.EvaluatedData.Magnitude > 0.0f)
+		{
+			FBaseVerbMessage Message;
+			Message.Verb = TAG_Base_Damage_Message;
+			Message.Instigator = Data.EffectSpec.GetEffectContext().GetEffectCauser();
+			Message.InstigatorTags = *Data.EffectSpec.CapturedSourceTags.GetAggregatedTags();
+			Message.Target = GetOwningActor();
+			Message.TargetTags = *Data.EffectSpec.CapturedTargetTags.GetAggregatedTags();
+			//@TODO: Fill out context tags, and any non-ability-system source/instigator tags
+			//@TODO: Determine if it's an opposing team kill, self-own, team kill, etc...
+			Message.Magnitude = Data.EvaluatedData.Magnitude;
+
+			UGameplayMessageSubsystem& MessageSystem = UGameplayMessageSubsystem::Get(GetWorld());
+			MessageSystem.BroadcastMessage(Message.Verb, Message);
+		}
 
 		// Convert into -Health and then clamp
 		SetHealth(FMath::Clamp(GetHealth() - GetDamage(), MinimumHealth, GetMaxHealth()));

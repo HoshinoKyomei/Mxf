@@ -1,9 +1,10 @@
 ﻿// Copyright Soatori Games, Inc. All Rights Reserved.
 
-
 #include "BaseAttributeSet.h"
 
 #include "AbilitySystem/BaseAbilitySystemComponent.h"
+
+#include UE_INLINE_GENERATED_CPP_BY_NAME(BaseAttributeSet)
 
 class UWorld;
 

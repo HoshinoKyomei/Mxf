@@ -9,7 +9,7 @@
 /**
  * 
  */
-UCLASS()
+UCLASS(Abstract, HideCategories = Input, Meta = (ShortTooltip = "The base gameplay ability class used by this project."))
 class MXFGAME_API UBaseGameplayAbility : public UGameplayAbility
 {
 	GENERATED_BODY()

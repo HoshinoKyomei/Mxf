@@ -23,7 +23,7 @@ class MXFGAME_API UBasePawnData : public UPrimaryDataAsset
 	
 public:
 
-	UBasePawnData();
+	UBasePawnData(const FObjectInitializer& ObjectInitializer);
 
 	// Class to instantiate for this pawn (should usually derive from ABasePawn or ABaseCharacter).
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Pawn")

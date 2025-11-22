@@ -9,6 +9,8 @@
 
 #include "BasePlayerState.generated.h"
 
+struct FBaseVerbMessage;
+
 class AController;
 class APlayerState;
 class FName;
@@ -23,14 +25,14 @@ struct FGameplayTag;
  *
  *	Base player state class used by this project.
  */
-UCLASS()
+UCLASS(Config = Game)
 class MXFGAME_API ABasePlayerState : public AModularPlayerState, public IAbilitySystemInterface
 {
 	GENERATED_BODY()
 	
 public:
 	
-	ABasePlayerState();
+	ABasePlayerState(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 	
 	UFUNCTION(BlueprintCallable, Category= "PlayerState")
 	UBaseAbilitySystemComponent* GetBaseAbilitySystemComponent() const { return AbilitySystemComponent; }
@@ -66,6 +68,11 @@ public:
 	// Returns true if there is at least one stack of the specified tag
 	UFUNCTION(BlueprintCallable, Category=Teams)
 	bool HasStatTag(FGameplayTag Tag) const;
+	
+	// Send a message to just this player
+	// (use only for client notifications like accolades, quest toasts, etc... that can handle being occasionally lost)
+	UFUNCTION(Client, Unreliable, BlueprintCallable, Category = "Lyra|PlayerState")
+	void ClientBroadcastMessage(const FBaseVerbMessage Message);
 	
 protected:
 	UFUNCTION()

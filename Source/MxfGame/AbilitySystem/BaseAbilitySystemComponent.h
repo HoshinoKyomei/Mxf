@@ -18,6 +18,6 @@ class MXFGAME_API UBaseAbilitySystemComponent : public UAbilitySystemComponent
 
 public:
 	// Sets default values for this component's properties
-	UBaseAbilitySystemComponent();
+	UBaseAbilitySystemComponent(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 	
 };

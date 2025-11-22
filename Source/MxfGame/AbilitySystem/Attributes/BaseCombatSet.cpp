@@ -5,6 +5,8 @@
 #include "AbilitySystem/Attributes/BaseAttributeSet.h"
 #include "Net/UnrealNetwork.h"
 
+#include UE_INLINE_GENERATED_CPP_BY_NAME(BaseCombatSet)
+
 UBaseCombatSet::UBaseCombatSet()
 	: BaseDamage(0.0f)
 	, BaseHeal(0.0f)

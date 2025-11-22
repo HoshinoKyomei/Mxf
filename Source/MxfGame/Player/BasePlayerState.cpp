@@ -1,6 +1,5 @@
 ﻿// Copyright Soatori Games, Inc. All Rights Reserved.
 
-
 #include "BasePlayerState.h"
 
 #include "AbilitySystem/Attributes/BaseCombatSet.h"
@@ -10,12 +9,18 @@
 #include "Character/BasePawnData.h"
 #include "Character/BasePawnExtensionComponent.h"
 #include "Components/GameFrameworkComponentManager.h"
+#include "GameFramework/GameplayMessageSubsystem.h"
+//@TODO: Would like to isolate this a bit better to get the pawn data in here without this having to know about other stuff
 #include "BaseLogChannels.h"
+#include "Messages/BaseVerbMessage.h"
 #include "Net/UnrealNetwork.h"
+
+#include UE_INLINE_GENERATED_CPP_BY_NAME(BasePlayerState)
 
 const FName ABasePlayerState::NAME_BaseAbilityReady("BaseAbilitiesReady");
 
-ABasePlayerState::ABasePlayerState()
+ABasePlayerState::ABasePlayerState(const FObjectInitializer& ObjectInitializer)
+	: Super(ObjectInitializer)
 {
 	AbilitySystemComponent = CreateDefaultSubobject<UBaseAbilitySystemComponent>(TEXT("AbilitySystemComponent"));
 	AbilitySystemComponent->SetIsReplicated(true);
@@ -117,4 +122,13 @@ int32 ABasePlayerState::GetStatTagStackCount(FGameplayTag Tag) const
 bool ABasePlayerState::HasStatTag(FGameplayTag Tag) const
 {
 	return StatTags.ContainsTag(Tag);
+}
+
+void ABasePlayerState::ClientBroadcastMessage_Implementation(const FBaseVerbMessage Message)
+{
+	// This check is needed to prevent running the action when in standalone mode
+	if (GetNetMode() == NM_Client)
+	{
+		UGameplayMessageSubsystem::Get(this).BroadcastMessage(Message.Verb, Message);
+	}
 }

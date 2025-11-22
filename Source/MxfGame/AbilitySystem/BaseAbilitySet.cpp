@@ -6,6 +6,8 @@
 #include "BaseAbilitySystemComponent.h"
 #include "BaseLogChannels.h"
 
+#include UE_INLINE_GENERATED_CPP_BY_NAME(BaseAbilitySet)
+
 void FBaseAbilitySet_GrantedHandles::AddAbilitySpecHandle(const FGameplayAbilitySpecHandle& Handle)
 {
 	if (Handle.IsValid())
