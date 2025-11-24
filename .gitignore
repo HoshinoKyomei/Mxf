@@ -136,6 +136,10 @@ Engine/Programs/UnrealBuildTool/*
 *.sdf
 *.p4ignore
 
+Content/__ExternalActors__/*
+Content/__ExternalObjects__/*
+Content/Collections/*
+Content/Developers/*
 Content/Packs/*
 Content/Temp/*
 Content/FirstPerson/*
