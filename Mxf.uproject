@@ -61,6 +61,11 @@
 		{
 			"Name": "AIAssistant",
 			"Enabled": true
+		},
+		{
+			"Name": "PropertyHistory",
+			"Enabled": true,
+			"MarketplaceURL": "com.epicgames.launcher://ue/Fab/product/0edd8744-2384-4009-b997-e1ec7795a316"
 		}
 	]
 }
