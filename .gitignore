@@ -135,6 +135,7 @@ Engine/Programs/UnrealBuildTool/*
 *.opendb
 *.sdf
 *.p4ignore
+*.tongyiignore
 
 Content/__ExternalActors__/*
 Content/__ExternalObjects__/*

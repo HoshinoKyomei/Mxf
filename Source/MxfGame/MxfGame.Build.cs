@@ -31,7 +31,8 @@ public class MxfGame : ModuleRules
 		PrivateDependencyModuleNames.AddRange(
 			new string[] {
 				"NetCore",
-				"GameplayMessageRuntime"
+				"GameplayMessageRuntime",
+				"ALSV4_CPP"
 				}
 			);
 

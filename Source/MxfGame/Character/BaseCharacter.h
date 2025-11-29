@@ -102,10 +102,10 @@ protected:
 
 private:
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Base|Character", Meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Character", Meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UBasePawnExtensionComponent> PawnExtComponent;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Base|Character", Meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Character", Meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UBaseHealthComponent> HealthComponent;
 	
 };
