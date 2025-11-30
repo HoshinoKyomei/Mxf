@@ -9,7 +9,7 @@
 class APawn;
 class UBaseAbilitySet;
 // class UBaseAbilityTagRelationshipMapping;
-// class UBaseInputConfig;
+class UBaseInputConfig;
 class UObject;
 
 /**
@@ -39,8 +39,8 @@ public:
 	// TObjectPtr<UBaseAbilityTagRelationshipMapping> TagRelationshipMapping;
 
 	// Input configuration used by player-controlled pawns to create input mappings and bind input actions.
-	// UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input")
-	// TObjectPtr<UBaseInputConfig> InputConfig;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input")
+	TObjectPtr<UBaseInputConfig> InputConfig;
 
 	// Default camera mode used by player controlled pawns.
 	// UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Camera")

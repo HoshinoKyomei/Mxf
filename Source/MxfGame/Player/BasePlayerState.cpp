@@ -12,6 +12,7 @@
 #include "GameFramework/GameplayMessageSubsystem.h"
 //@TODO: Would like to isolate this a bit better to get the pawn data in here without this having to know about other stuff
 #include "BaseLogChannels.h"
+#include "BasePlayerController.h"
 #include "Messages/BaseVerbMessage.h"
 #include "Net/UnrealNetwork.h"
 
@@ -32,6 +33,11 @@ ABasePlayerState::ABasePlayerState(const FObjectInitializer& ObjectInitializer)
 	
 	// AbilitySystemComponent needs to be updated at a high frequency.
 	SetNetUpdateFrequency(100.0f);
+}
+
+ABasePlayerController* ABasePlayerState::GetBasePlayerController() const
+{
+	return  Cast<ABasePlayerController>(GetPlayerController());
 }
 
 void ABasePlayerState::ClientInitialize(AController* C)

@@ -12,6 +12,7 @@
 
 class AActor;
 class AController;
+class ABasePlayerController;
 class ABasePlayerState;
 class FLifetimeProperty;
 class IRepChangedPropertyTracker;
@@ -40,6 +41,9 @@ class MXFGAME_API ABaseCharacter : public AModularCharacter, public IAbilitySyst
 public:
 
 	ABaseCharacter(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
+	
+	UFUNCTION(BlueprintCallable, Category = "Character")
+	ABasePlayerController* GetBasePlayerController() const;
 	
 	UFUNCTION(BlueprintCallable, Category = "Character")
 	ABasePlayerState* GetBasePlayerState() const;

@@ -11,6 +11,7 @@
 #include "BaseGameplayTags.h"
 // #include "BaseLogChannels.h"
 // #include "Net/UnrealNetwork.h"
+#include "Player/BasePlayerController.h"
 #include "Player/BasePlayerState.h"
 #include "TimerManager.h"
 
@@ -67,6 +68,11 @@ ABaseCharacter::ABaseCharacter(const FObjectInitializer& ObjectInitializer)
 
 	BaseEyeHeight = 80.0f;
 	CrouchedEyeHeight = 50.0f;
+}
+
+ABasePlayerController* ABaseCharacter::GetBasePlayerController() const
+{
+	return Cast<ABasePlayerController>(GetController());
 }
 
 void ABaseCharacter::Reset()

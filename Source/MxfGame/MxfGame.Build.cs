@@ -24,12 +24,14 @@ public class MxfGame : ModuleRules
 				"GameplayTasks",
 				"GameplayAbilities",
 				"ModularGameplay",
-				"ModularGameplayActors"
+				"ModularGameplayActors",
+				"GameFeatures"
 				}
 			);
 
 		PrivateDependencyModuleNames.AddRange(
 			new string[] {
+				"EnhancedInput",
 				"NetCore",
 				"GameplayMessageRuntime",
 				"ALSV4_CPP"

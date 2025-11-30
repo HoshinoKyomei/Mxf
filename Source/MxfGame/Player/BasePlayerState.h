@@ -12,6 +12,7 @@
 struct FBaseVerbMessage;
 
 class AController;
+class ABasePlayerController;
 class APlayerState;
 class FName;
 class UAbilitySystemComponent;
@@ -34,6 +35,9 @@ class MXFGAME_API ABasePlayerState : public AModularPlayerState, public IAbility
 public:
 	
 	ABasePlayerState(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
+	
+	UFUNCTION(BlueprintCallable, Category = "PlayerState")
+	ABasePlayerController* GetBasePlayerController() const;
 	
 	UFUNCTION(BlueprintCallable, Category= "PlayerState")
 	UBaseAbilitySystemComponent* GetBaseAbilitySystemComponent() const { return AbilitySystemComponent; }
@@ -72,7 +76,7 @@ public:
 	
 	// Send a message to just this player
 	// (use only for client notifications like accolades, quest toasts, etc... that can handle being occasionally lost)
-	UFUNCTION(Client, Unreliable, BlueprintCallable, Category = "Lyra|PlayerState")
+	UFUNCTION(Client, Unreliable, BlueprintCallable, Category = "Base|PlayerState")
 	void ClientBroadcastMessage(const FBaseVerbMessage Message);
 	
 protected:
