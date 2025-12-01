@@ -31,7 +31,20 @@ public:
 	
 	UFUNCTION(BlueprintCallable, Category = "PlayerController")
 	UBaseAbilitySystemComponent* GetBaseAbilitySystemComponent() const;
-
+	
+	//~AActor interface
+	virtual void BeginPlay() override;
+	//~End of AActor interface
+	
+	//~AController interface
+	virtual void OnPossess(APawn* InPawn) override;
+	//~End of AController interface
+	
+	//~APlayerController interface
+	virtual void PlayerTick(float DeltaTime) override;
+	virtual void PreProcessInput(const float DeltaTime, const bool bGamePaused) override;
+	virtual void PostProcessInput(const float DeltaTime, const bool bGamePaused) override;
+	//~End of APlayerController interface
 	
 	UFUNCTION(BlueprintCallable, Category = "Character")
 	void SetIsAutoRunning(const bool bEnabled);

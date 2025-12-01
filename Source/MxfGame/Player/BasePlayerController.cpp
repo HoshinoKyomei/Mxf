@@ -25,6 +25,51 @@ UBaseAbilitySystemComponent* ABasePlayerController::GetBaseAbilitySystemComponen
 	return (BasePS ? BasePS->GetBaseAbilitySystemComponent() : nullptr);
 }
 
+void ABasePlayerController::BeginPlay()
+{
+	Super::BeginPlay();
+	
+	SetIsAutoRunning(false);
+}
+
+void ABasePlayerController::OnPossess(APawn* InPawn)
+{
+	Super::OnPossess(InPawn);
+	
+	SetIsAutoRunning(false);
+}
+
+void ABasePlayerController::PlayerTick(float DeltaTime)
+{
+	Super::PlayerTick(DeltaTime);
+	
+	// If we are auto-running, then add some player input
+	if (GetIsAutoRunning())
+	{
+		if (APawn* CurrentPawn = GetPawn())
+		{
+			const FRotator MovementRotation(0.0f, GetControlRotation().Yaw, 0.0f);
+			const FVector MovementDirection = MovementRotation.RotateVector(FVector::ForwardVector);
+			CurrentPawn->AddMovementInput(MovementDirection, 1.0f);	
+		}
+	}
+}
+
+void ABasePlayerController::PreProcessInput(const float DeltaTime, const bool bGamePaused)
+{
+	Super::PreProcessInput(DeltaTime, bGamePaused);
+}
+
+void ABasePlayerController::PostProcessInput(const float DeltaTime, const bool bGamePaused)
+{
+	if (UBaseAbilitySystemComponent* BaseASC = GetBaseAbilitySystemComponent())
+	{
+		BaseASC->ProcessAbilityInput(DeltaTime, bGamePaused);
+	}
+	
+	Super::PostProcessInput(DeltaTime, bGamePaused);
+}
+
 void ABasePlayerController::SetIsAutoRunning(const bool bEnabled)
 {
 	const bool bIsAutoRunning = GetIsAutoRunning();

@@ -150,3 +150,5 @@ Content/Variant_Horror/*
 Content/Variant_Platforming/*
 Content/Variant_Shooter/*
 Content/Variant_SideScroller/*
+Plugins/TemplateFirstPerson/*
+Plugins/TemplateThirdPerson/*
