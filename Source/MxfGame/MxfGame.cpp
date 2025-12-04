@@ -1,4 +1,4 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
+// Copyright Soatori Games, Inc. All Rights Reserved.
 
 #include "MxfGame.h"
 #include "Modules/ModuleManager.h"

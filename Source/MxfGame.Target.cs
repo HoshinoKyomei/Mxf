@@ -9,7 +9,7 @@ public class MxfGameTarget : TargetRules
 	{
 		Type = TargetType.Game;
 		DefaultBuildSettings = BuildSettingsVersion.V6;
-		IncludeOrderVersion = EngineIncludeOrderVersion.Unreal5_7;
-		ExtraModuleNames.Add("MxfGame");
+
+		ExtraModuleNames.AddRange( new string[] { "MxfGame" } );
 	}
 }
