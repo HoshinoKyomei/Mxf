@@ -1,4 +1,4 @@
-// Copyright Soatori Games, Inc. All Rights Reserved.
+// Copyright Epic Games, Inc. All Rights Reserved.
 
 using UnrealBuildTool;
 
@@ -7,40 +7,14 @@ public class MxfGame : ModuleRules
 	public MxfGame(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
+	
+		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput" });
 
-		PublicIncludePaths.AddRange(
-			new string[] {
-				"MxfGame"
-			}
-		);
-
-		PublicDependencyModuleNames.AddRange(
-			new string[] {
-				"Core",
-				"CoreUObject",
-				"Engine",
-				"InputCore",
-				"GameplayTags",
-				"GameplayTasks",
-				"GameplayAbilities",
-				"ModularGameplay",
-				"ModularGameplayActors",
-				"GameFeatures"
-				}
-			);
-
-		PrivateDependencyModuleNames.AddRange(
-			new string[] {
-				"EnhancedInput",
-				"NetCore",
-				"GameplayMessageRuntime",
-				"ALSV4_CPP"
-				}
-			);
+		PrivateDependencyModuleNames.AddRange(new string[] {  });
 
 		// Uncomment if you are using Slate UI
 		// PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });
-
+		
 		// Uncomment if you are using online features
 		// PrivateDependencyModuleNames.Add("OnlineSubsystem");
 
