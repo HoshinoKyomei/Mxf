@@ -10,4 +10,12 @@ Developed with Unreal Engine 5.7
 	- ModularGameplay
 - Custom
 	- ModularGameplayActors
-	- CommonGame
+    - TemplateResources
+
+## Frame structure
+- ModularActor
+  - BaseActor<Character, PlayerState, PlayerController>
+    - BP_BaseActor(Blueprint)
+- PawnComponent
+  - BasePawnComponent
+    - BP_BaseComponent(Blueprint)
