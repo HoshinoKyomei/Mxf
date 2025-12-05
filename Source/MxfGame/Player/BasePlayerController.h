@@ -31,9 +31,9 @@ public:
 	
 	ABasePlayerController(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 	
-	UFUNCTION(BlueprintNativeEvent, Category = "PlayerController")
-	ABasePlayerState* GetBasePlayerState() const;
+	UFUNCTION(BlueprintCallable, Category = "PlayerController")
+	ABasePlayerState* FindBasePlayerState() const;
 
-	UFUNCTION(BlueprintNativeEvent, Category = "PlayerController")
-	UBaseAbilitySystemComponent* GetBaseAbilitySystemComponent() const;
+	UFUNCTION(BlueprintCallable, Category = "PlayerController")
+	UBaseAbilitySystemComponent* FindBaseAbilitySystemComponent() const;
 };

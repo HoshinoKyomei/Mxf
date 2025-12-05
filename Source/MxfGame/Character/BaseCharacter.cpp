@@ -66,17 +66,17 @@ ABaseCharacter::ABaseCharacter(const FObjectInitializer& ObjectInitializer)
 	CrouchedEyeHeight = 50.0f;
 }
 
-ABasePlayerController* ABaseCharacter::GetBasePlayerController_Implementation() const
+ABasePlayerController* ABaseCharacter::FindBasePlayerController() const
 {
 	return Cast<ABasePlayerController>(GetController());
 }
 
-ABasePlayerState* ABaseCharacter::GetBasePlayerState_Implementation() const
+ABasePlayerState* ABaseCharacter::FindBasePlayerState() const
 {
 	return CastChecked<ABasePlayerState>(GetPlayerState(), ECastCheckedType::NullAllowed);
 }
 
-UBaseAbilitySystemComponent* ABaseCharacter::GetBaseAbilitySystemComponent_Implementation() const
+UBaseAbilitySystemComponent* ABaseCharacter::FindBaseAbilitySystemComponent() const
 {
 	return Cast<UBaseAbilitySystemComponent>(GetAbilitySystemComponent());
 }
@@ -84,9 +84,4 @@ UBaseAbilitySystemComponent* ABaseCharacter::GetBaseAbilitySystemComponent_Imple
 UAbilitySystemComponent* ABaseCharacter::GetAbilitySystemComponent() const
 {
 	return FindAbilitySystemComponent();
-}
-
-UAbilitySystemComponent* ABaseCharacter::FindAbilitySystemComponent_Implementation() const
-{
-	return nullptr;
 }

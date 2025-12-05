@@ -29,14 +29,14 @@ ABasePlayerState::ABasePlayerState(const FObjectInitializer& ObjectInitializer)
 	SetNetUpdateFrequency(100.0f);
 }
 
-ABasePlayerController* ABasePlayerState::GetBasePlayerController_Implementation() const
+ABasePlayerController* ABasePlayerState::FindBasePlayerController() const
 {
 	return Cast<ABasePlayerController>(GetOwner());
 }
 
 UAbilitySystemComponent* ABasePlayerState::GetAbilitySystemComponent() const
 {
-	return GetBaseAbilitySystemComponent();
+	return FindBaseAbilitySystemComponent();
 }
 
 void ABasePlayerState::PostInitializeComponents()

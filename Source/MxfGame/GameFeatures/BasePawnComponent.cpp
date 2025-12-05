@@ -54,7 +54,7 @@ void UBasePawnComponent::BeginPlay()
 	
 	if (GameFrameworkSet.IsEnabled)
 	{
-		GameFramework_CallBindOnActorInitStateChanged(NAME_ActorFeatureName, GameFrameworkSet);
+		GameFramework_CallBindOnActorInitStateChanged(GameFrameworkSet);
 	}
 }
 
@@ -123,11 +123,11 @@ void UBasePawnComponent::GameFramework_CallContinueInitStateChain(TArray<FGamepl
 	ContinueInitStateChain(InitStateChain);
 }
 
-void UBasePawnComponent::GameFramework_CallBindOnActorInitStateChanged(FName FeatureName, FBaseGameFrameworkSet InGameFrameworkSet)
+void UBasePawnComponent::GameFramework_CallBindOnActorInitStateChanged(FBaseGameFrameworkSet InGameFrameworkSet)
 {
 	// Listen for changes to all features
 	// Listen for when the pawn extension component changes init state
-	BindOnActorInitStateChanged(FeatureName, InGameFrameworkSet.RequiredStateTags, InGameFrameworkSet.IsCallIfReached);
+	BindOnActorInitStateChanged(InGameFrameworkSet.FeatureName, InGameFrameworkSet.RequiredStateTags, InGameFrameworkSet.IsCallIfReached);
 	
 	// Notifies state manager that we have spawned, then try the rest of default initialization
 	// Notifies that we are done spawning, then try the rest of initialization

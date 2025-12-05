@@ -12,13 +12,13 @@ ABasePlayerController::ABasePlayerController(const FObjectInitializer& ObjectIni
 {
 }
 
-ABasePlayerState* ABasePlayerController::GetBasePlayerState_Implementation() const
+ABasePlayerState* ABasePlayerController::FindBasePlayerState() const
 {
 	return CastChecked<ABasePlayerState>(PlayerState, ECastCheckedType::NullAllowed);
 }
 
-UBaseAbilitySystemComponent* ABasePlayerController::GetBaseAbilitySystemComponent_Implementation() const
+UBaseAbilitySystemComponent* ABasePlayerController::FindBaseAbilitySystemComponent() const
 {
-	const ABasePlayerState* BasePS = GetBasePlayerState();
-	return (BasePS ? BasePS->GetBaseAbilitySystemComponent() : nullptr);
+	const ABasePlayerState* BasePS = FindBasePlayerState();
+	return (BasePS ? BasePS->FindBaseAbilitySystemComponent() : nullptr);
 }

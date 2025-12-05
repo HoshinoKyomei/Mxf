@@ -38,17 +38,18 @@ public:
 	
 	ABaseCharacter(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 	
-	UFUNCTION(BlueprintNativeEvent, Category = "Character")
-	ABasePlayerController* GetBasePlayerController() const;
+	UFUNCTION(BlueprintCallable, Category = "Character")
+	ABasePlayerController* FindBasePlayerController() const;
 	
-	UFUNCTION(BlueprintNativeEvent, Category = "Character")
-	ABasePlayerState* GetBasePlayerState() const;
+	UFUNCTION(BlueprintCallable, Category = "Character")
+	ABasePlayerState* FindBasePlayerState() const;
 	
-	UFUNCTION(BlueprintNativeEvent, Category = "Character")
-	UBaseAbilitySystemComponent* GetBaseAbilitySystemComponent() const;
+	UFUNCTION(BlueprintCallable, Category = "Character")
+	UBaseAbilitySystemComponent* FindBaseAbilitySystemComponent() const;
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	
-	UFUNCTION(BlueprintNativeEvent, Category = "Character")
+	// 必须在子类重载
+	UFUNCTION(BlueprintImplementableEvent, Category = "Character")
 	UAbilitySystemComponent* FindAbilitySystemComponent() const;
 	
 };

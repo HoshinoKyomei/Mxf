@@ -31,13 +31,11 @@ public:
 	
 	ABasePlayerState(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 	
-	UFUNCTION(BlueprintNativeEvent, Category = "PlayerState")
-	ABasePlayerController* GetBasePlayerController() const;
+	UFUNCTION(BlueprintCallable, Category = "PlayerState")
+	ABasePlayerController* FindBasePlayerController() const;
 
-	UFUNCTION(BlueprintNativeEvent, Category = "PlayerState")
-	UBaseAbilitySystemComponent* GetBaseAbilitySystemComponent() const;
-	UBaseAbilitySystemComponent* GetBaseAbilitySystemComponent_Implementation() const { return AbilitySystemComponent; }
-	
+	UFUNCTION(BlueprintCallable, Category = "PlayerState")
+	UBaseAbilitySystemComponent* FindBaseAbilitySystemComponent() const { return AbilitySystemComponent; }
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	
 	//~AActor interface

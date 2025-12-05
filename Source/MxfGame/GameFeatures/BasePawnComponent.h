@@ -23,6 +23,9 @@ struct FBaseGameFrameworkSet
 	bool IsEnabled = true;
 	
 	UPROPERTY(EditDefaultsOnly)
+	FName FeatureName = NAME_None;
+	
+	UPROPERTY(EditDefaultsOnly)
 	FGameplayTag RequiredStateTags = FGameplayTag();
 	
 	UPROPERTY(EditDefaultsOnly)
@@ -88,7 +91,7 @@ protected:
 	void GameFramework_CallContinueInitStateChain(TArray<FGameplayTag> InitStateChain);
 	
 	UFUNCTION(BlueprintCallable, Category="GameFramework", meta=(DisplayName="Call_BindOnActorInitStateChanged"))
-	void GameFramework_CallBindOnActorInitStateChanged(FName FeatureName, FBaseGameFrameworkSet InGameFrameworkSet);
+	void GameFramework_CallBindOnActorInitStateChanged(FBaseGameFrameworkSet InGameFrameworkSet);
 	
 	UPROPERTY(EditDefaultsOnly, Category="GameFramework")
 	FBaseGameFrameworkSet GameFrameworkSet;
