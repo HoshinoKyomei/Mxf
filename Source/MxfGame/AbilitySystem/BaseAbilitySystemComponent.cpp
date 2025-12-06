@@ -8,3 +8,8 @@ UBaseAbilitySystemComponent::UBaseAbilitySystemComponent(const FObjectInitialize
 	: Super(ObjectInitializer)
 {
 }
+
+void UBaseAbilitySystemComponent::InitAbilityActorInfo(AActor* InOwnerActor, AActor* InAvatarActor)
+{
+	Super::InitAbilityActorInfo(InOwnerActor, InAvatarActor);
+}

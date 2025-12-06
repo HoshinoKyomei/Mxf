@@ -44,8 +44,21 @@ public:
 	
 	UBasePawnComponent(const FObjectInitializer& ObjectInitializer);
 	
+	//~ Check Pawn Interface
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category="GameFramework", meta=(DisplayName="GetPawnChecked"))
+	APawn* GetBasePawnChecked() const { return GetPawnChecked<APawn>(); }
+	
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category="GameFramework", meta=(DisplayName="GetPawn"))
+	APawn* GetBasePawn() const { return GetPawn<APawn>(); }
+	//~ End Check Pawn Interface
+	
+	//~ Get Pawn Interface
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category="GameFramework", meta=(DisplayName="GetController"))
+	AController* GetBaseController() const { return GetController<AController>(); }
+	//~ End Get Pawn Interface
+	
 	/** The name of this overall feature, this one depends on the other named component features */
-	UPROPERTY(EditDefaultsOnly, Category="GameFramework")
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category="Default")
 	FName NAME_ActorFeatureName;
 
 	//~ Begin IGameFrameworkInitStateInterface interface
@@ -58,8 +71,11 @@ public:
 	
 protected:
 	
-	UFUNCTION(BlueprintImplementableEvent)
+	UFUNCTION(BlueprintImplementableEvent, meta=(DisplayName="ConstructionScript"))
 	bool BaseConstructionScript();
+	
+	UFUNCTION(BlueprintNativeEvent, Category="GameFramework", meta=(DisplayName="OnRegister"))
+	void GameFramework_OnRegister();
 	
 	virtual void OnRegister() override;
 	virtual void BeginPlay() override;
@@ -68,31 +84,36 @@ protected:
 protected:
 	
 	// Native events
-	UFUNCTION(BlueprintNativeEvent, Category="GameFramework", meta=(DisplayName="CanChangeInitState"))
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category="GameFramework", meta=(DisplayName="CanChangeInitState"))
 	bool GameFramework_CanChangeInitState(UGameFrameworkComponentManager* Manager, FGameplayTag CurrentState, FGameplayTag DesiredState) const;
 	
-	UFUNCTION(BlueprintNativeEvent, Category="GameFramework", meta=(DisplayName="HandleChangeInitState"))
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category="GameFramework", meta=(DisplayName="HandleChangeInitState"))
 	bool GameFramework_HandleChangeInitState(UGameFrameworkComponentManager* Manager, FGameplayTag CurrentState, FGameplayTag DesiredState);
 	
-	UFUNCTION(BlueprintNativeEvent, Category="GameFramework", meta=(DisplayName="OnActorInitStateChanged"))
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category="GameFramework", meta=(DisplayName="OnActorInitStateChanged"))
 	bool GameFramework_OnActorInitStateChanged(const FActorInitStateChangedParams& Params);
 	
-	UFUNCTION(BlueprintNativeEvent, Category="GameFramework", meta=(DisplayName="CheckDefaultInitialization"))
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category="GameFramework", meta=(DisplayName="CheckDefaultInitialization"))
 	bool GameFramework_CheckDefaultInitialization();
-	
-	UFUNCTION(BlueprintNativeEvent, Category="GameFramework", meta=(DisplayName="OnRegisterInitFeature"))
-	bool GameFramework_OnRegisterInitFeature();
 	
 	//Blueprint events
 	UFUNCTION(BlueprintCallable, Category="GameFramework", meta=(DisplayName="Call_RegisterInitStateFeature"))
 	void GameFramework_CallRegisterInitStateFeature();
 	
+	UFUNCTION(BlueprintCallable, Category="GameFramework", meta=(DisplayName="Call_CheckDefaultInitializationForImplementers"))
+	void GameFramework_CheckDefaultInitializationForImplementers();
+	
 	UFUNCTION(BlueprintCallable, Category="GameFramework", meta=(DisplayName="Call_ContinueInitStateChain"))
-	void GameFramework_CallContinueInitStateChain(TArray<FGameplayTag> InitStateChain);
+	void GameFramework_CallContinueInitStateChain();
 	
 	UFUNCTION(BlueprintCallable, Category="GameFramework", meta=(DisplayName="Call_BindOnActorInitStateChanged"))
 	void GameFramework_CallBindOnActorInitStateChanged(FBaseGameFrameworkSet InGameFrameworkSet);
 	
-	UPROPERTY(EditDefaultsOnly, Category="GameFramework")
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category="GameFramework", meta=(DisplayName="Call_HaveAllFeaturesReachedInitState"))
+	bool GameFramework_CallHaveAllFeaturesReachedInitState(UGameFrameworkComponentManager* Manager, AActor* Actor, FGameplayTag RequiredState, FName ExcludingFeature = NAME_None) const;
+	
+protected:
+	
+	UPROPERTY(EditDefaultsOnly, Category="Default")
 	FBaseGameFrameworkSet GameFrameworkSet;
 };

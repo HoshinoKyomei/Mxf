@@ -3,6 +3,7 @@
 #include "BasePawnComponent.h"
 
 #include "BaseGameplayTags.h"
+#include "Components/GameFrameworkComponentManager.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(BasePawnComponent)
 
@@ -38,14 +39,16 @@ void UBasePawnComponent::CheckDefaultInitialization()
 	GameFramework_CheckDefaultInitialization();
 }
 
+void UBasePawnComponent::GameFramework_OnRegister_Implementation()
+{
+	GameFramework_CallRegisterInitStateFeature();
+}
+
 void UBasePawnComponent::OnRegister()
 {
 	Super::OnRegister();
 	
-	if (!GameFramework_OnRegisterInitFeature_Implementation())
-	{
-		GameFramework_CallRegisterInitStateFeature();
-	}
+	GameFramework_OnRegister();
 }
 
 void UBasePawnComponent::BeginPlay()
@@ -65,11 +68,6 @@ void UBasePawnComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
 	Super::EndPlay(EndPlayReason);
 }
 
-bool UBasePawnComponent::GameFramework_OnRegisterInitFeature_Implementation()
-{
-	return false;
-}
-
 bool UBasePawnComponent::GameFramework_HandleChangeInitState_Implementation(UGameFrameworkComponentManager* Manager,
                                                                             FGameplayTag CurrentState, FGameplayTag DesiredState)
 {
@@ -86,7 +84,8 @@ bool UBasePawnComponent::GameFramework_OnActorInitStateChanged_Implementation(co
 
 bool UBasePawnComponent::GameFramework_CheckDefaultInitialization_Implementation()
 {
-	GameFramework_CallContinueInitStateChain(TArray<FGameplayTag>());
+	// This will try to progress from spawned (which is only set in BeginPlay) through the data initialization stages until it gets to gameplay ready
+	GameFramework_CallContinueInitStateChain();
 	
 	return true;
 }
@@ -108,19 +107,20 @@ void UBasePawnComponent::GameFramework_CallRegisterInitStateFeature()
 	RegisterInitStateFeature();
 }
 
-void UBasePawnComponent::GameFramework_CallContinueInitStateChain(TArray<FGameplayTag> InitStateChain)
+void UBasePawnComponent::GameFramework_CheckDefaultInitializationForImplementers()
 {
-	if (InitStateChain.Num() == 0)
-	{
-		static const TArray<FGameplayTag> StateChain = {
-			BaseGameplayTags::InitState_Spawned, BaseGameplayTags::InitState_DataAvailable,
-			BaseGameplayTags::InitState_DataInitialized, BaseGameplayTags::InitState_GameplayReady
-		};
+	// Before checking our progress, try progressing any other features we might depend on
+	CheckDefaultInitializationForImplementers();
+}
 
-		InitStateChain = StateChain;
-	}
+void UBasePawnComponent::GameFramework_CallContinueInitStateChain()
+{
+	static const TArray<FGameplayTag> StateChain = {
+		BaseGameplayTags::InitState_Spawned, BaseGameplayTags::InitState_DataAvailable,
+		BaseGameplayTags::InitState_DataInitialized, BaseGameplayTags::InitState_GameplayReady
+	};
 	
-	ContinueInitStateChain(InitStateChain);
+	ContinueInitStateChain(StateChain);
 }
 
 void UBasePawnComponent::GameFramework_CallBindOnActorInitStateChanged(FBaseGameFrameworkSet InGameFrameworkSet)
@@ -133,4 +133,10 @@ void UBasePawnComponent::GameFramework_CallBindOnActorInitStateChanged(FBaseGame
 	// Notifies that we are done spawning, then try the rest of initialization
 	ensure(TryToChangeInitState(InGameFrameworkSet.ToStateTags));
 	CheckDefaultInitialization();
+}
+
+bool UBasePawnComponent::GameFramework_CallHaveAllFeaturesReachedInitState(UGameFrameworkComponentManager* Manager,
+	AActor* Actor, FGameplayTag RequiredState, FName ExcludingFeature) const
+{
+	return Manager->HaveAllFeaturesReachedInitState(Actor, RequiredState, ExcludingFeature);
 }
