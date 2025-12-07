@@ -63,7 +63,11 @@ void UBasePawnComponent::BeginPlay()
 
 void UBasePawnComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
-	UnregisterInitStateFeature();
+	
+	if (GameFrameworkSet.IsEnabled)
+	{
+		UnregisterInitStateFeature();
+	}
 	
 	Super::EndPlay(EndPlayReason);
 }
