@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "AbilitySystemInterface.h"
+#include "AttributeSet.h"
 #include "ModularPlayerState.h"
 
 #include "BasePlayerState.generated.h"
@@ -52,6 +53,7 @@ protected:
 	TObjectPtr<UBaseAbilitySystemComponent> AbilitySystemComponent;
 	
 	// Health attribute set used by this actor.
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "PlayerState")
-	TObjectPtr<const class UBaseHealthSet> HealthSet;
+	// UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "PlayerState")
+	// TObjectPtr<const class UBaseHealthSet> HealthSet;
+
 };

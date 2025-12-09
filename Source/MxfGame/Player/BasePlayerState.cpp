@@ -23,7 +23,7 @@ ABasePlayerState::ABasePlayerState(const FObjectInitializer& ObjectInitializer)
 	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Mixed);
 
 	// These attribute sets will be detected by AbilitySystemComponent::InitializeComponent. Keeping a reference so that the sets don't get garbage collected before that.
-	HealthSet = CreateDefaultSubobject<UBaseHealthSet>(TEXT("HealthSet"));
+	// HealthSet = CreateDefaultSubobject<UBaseHealthSet>(TEXT("HealthSet"));
 	
 	// AbilitySystemComponent needs to be updated at a high frequency.
 	SetNetUpdateFrequency(100.0f);

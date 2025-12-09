@@ -19,8 +19,8 @@ UE_DEFINE_GAMEPLAY_TAG(TAG_Gameplay_FellOutOfWorld, "Gameplay.Damage.FellOutOfWo
 UE_DEFINE_GAMEPLAY_TAG(TAG_Base_Damage_Message, "Base.Damage.Message");
 
 UBaseHealthSet::UBaseHealthSet()
-	: Health(100.0f)
-	, MaxHealth(100.0f)
+	// : Health(100.0f)
+	// , MaxHealth(100.0f)
 {
 	// bOutOfHealth = false;
 	// MaxHealthBeforeAttributeChange = 0.0f;
@@ -42,6 +42,8 @@ void UBaseHealthSet::OnRep_Health(const FGameplayAttributeData& OldValue)
 	// Call the change callback, but without an instigator
 	// This could be changed to an explicit RPC in the future
 	// These events on the client should not be changing attributes
+	
+	K2_OnRep_Health(OldValue);
 }
 
 void UBaseHealthSet::OnRep_MaxHealth(const FGameplayAttributeData& OldValue)
@@ -50,4 +52,6 @@ void UBaseHealthSet::OnRep_MaxHealth(const FGameplayAttributeData& OldValue)
 	
 	// Call the change callback, but without an instigator
 	// This could be changed to an explicit RPC in the future
+	
+	K2_OnRep_MaxHealth(OldValue);
 }

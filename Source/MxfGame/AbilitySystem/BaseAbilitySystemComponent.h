@@ -28,24 +28,24 @@ public:
 	
 public:
 	
-	//~ 蓝图父类方法 Interface
+	//~ AbilitySystemComponent Interface
 	/** Returns the avatar actor for this component */
 	UFUNCTION(BlueprintCallable, Category = "AbilitySystemComponent", meta=(DisplayName="GetAvatarActor"))
-	AActor* GetBaseAvatarActor() const { return GetAvatarActor(); }
+	AActor* K2_GetBaseAvatarActor() const { return GetAvatarActor(); }
 	
-	UFUNCTION(BlueprintCallable, Category = "AbilitySystemComponent")
-	AActor* GetAbilityActorInfo() const { return AbilityActorInfo->OwnerActor.Get(); }
+	UFUNCTION(BlueprintCallable, Category = "AbilitySystemComponent", meta=(DisplayName="GetAbilityActorInfo"))
+	AActor* K2_GetAbilityActorInfo() const { return AbilityActorInfo->OwnerActor.Get(); }
 	
 	UFUNCTION(BlueprintPure, BlueprintCallable, Category = "AbilitySystemComponent", meta=(DisplayName="GetOwnerActor"))
-	AActor* GetBaseOwnerActor() const { return GetOwnerActor(); }
+	AActor* K2_GetOwnerActor() const { return GetOwnerActor(); }
 	
 	UFUNCTION(BlueprintCallable, Category = "AbilitySystemComponent", meta=(DisplayName="RefreshAbilityActorInfo"))
-	void BaseRefreshAbilityActorInfo() { RefreshAbilityActorInfo(); }
+	void K2_RefreshAbilityActorInfo() { RefreshAbilityActorInfo(); }
 	
 	UFUNCTION(BlueprintCallable, Category = "AbilitySystemComponent", meta=(DisplayName="InitAbilityActorInfo"))
 	virtual void InitAbilityActorInfo(AActor* InOwnerActor, AActor* InAvatarActor) override;
 	
-	//~ End 蓝图父类方法 Interface
+	//~ End AbilitySystemComponent Interface
 	
 public:
 	
