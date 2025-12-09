@@ -19,7 +19,12 @@ public:
 	
 protected:
 	
-	UFUNCTION(BlueprintImplementableEvent)
-	bool BaseConstructionScript();
+	UFUNCTION(BlueprintImplementableEvent, meta=(DisplayName="ConstructionScript"))
+	bool K2_ConstructionScript();
+	
+	UFUNCTION(BlueprintImplementableEvent, Category="GameFramework", meta=(DisplayName="OnUnregister"))
+	void K2_OnUnregister();
+	
+	virtual void OnUnregister() override;
 	
 };

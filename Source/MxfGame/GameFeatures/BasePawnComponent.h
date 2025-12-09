@@ -72,10 +72,10 @@ public:
 protected:
 	
 	UFUNCTION(BlueprintImplementableEvent, meta=(DisplayName="ConstructionScript"))
-	bool BaseConstructionScript();
+	bool K2_ConstructionScript();
 	
 	UFUNCTION(BlueprintNativeEvent, Category="GameFramework", meta=(DisplayName="OnRegister"))
-	void GameFramework_OnRegister();
+	void K2_OnRegister();
 	
 	virtual void OnRegister() override;
 	virtual void BeginPlay() override;
@@ -85,32 +85,32 @@ protected:
 	
 	// Native events
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category="GameFramework", meta=(DisplayName="CanChangeInitState"))
-	bool GameFramework_CanChangeInitState(UGameFrameworkComponentManager* Manager, FGameplayTag CurrentState, FGameplayTag DesiredState) const;
+	bool K2_CanChangeInitState(UGameFrameworkComponentManager* Manager, FGameplayTag CurrentState, FGameplayTag DesiredState) const;
 	
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category="GameFramework", meta=(DisplayName="HandleChangeInitState"))
-	bool GameFramework_HandleChangeInitState(UGameFrameworkComponentManager* Manager, FGameplayTag CurrentState, FGameplayTag DesiredState);
+	bool K2_HandleChangeInitState(UGameFrameworkComponentManager* Manager, FGameplayTag CurrentState, FGameplayTag DesiredState);
 	
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category="GameFramework", meta=(DisplayName="OnActorInitStateChanged"))
-	bool GameFramework_OnActorInitStateChanged(const FActorInitStateChangedParams& Params);
+	bool K2_OnActorInitStateChanged(const FActorInitStateChangedParams& Params);
 	
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category="GameFramework", meta=(DisplayName="CheckDefaultInitialization"))
-	bool GameFramework_CheckDefaultInitialization();
+	bool K2_CheckDefaultInitialization();
 	
 	//Blueprint events
-	UFUNCTION(BlueprintCallable, Category="GameFramework", meta=(DisplayName="Call_RegisterInitStateFeature"))
-	void GameFramework_CallRegisterInitStateFeature();
+	UFUNCTION(BlueprintCallable, Category="GameFramework", meta=(DisplayName="RegisterInitStateFeature"))
+	void K2_RegisterInitStateFeature();
 	
-	UFUNCTION(BlueprintCallable, Category="GameFramework", meta=(DisplayName="Call_CheckDefaultInitializationForImplementers"))
-	void GameFramework_CheckDefaultInitializationForImplementers();
+	UFUNCTION(BlueprintCallable, Category="GameFramework", meta=(DisplayName="CheckDefaultInitializationForImplementers"))
+	void K2_CheckDefaultInitializationForImplementers();
 	
-	UFUNCTION(BlueprintCallable, Category="GameFramework", meta=(DisplayName="Call_ContinueInitStateChain"))
-	void GameFramework_CallContinueInitStateChain();
+	UFUNCTION(BlueprintCallable, Category="GameFramework", meta=(DisplayName="ContinueInitStateChain"))
+	void K2_ContinueInitStateChain();
 	
-	UFUNCTION(BlueprintCallable, Category="GameFramework", meta=(DisplayName="Call_BindOnActorInitStateChanged"))
-	void GameFramework_CallBindOnActorInitStateChanged(FBaseGameFrameworkSet InGameFrameworkSet);
+	UFUNCTION(BlueprintCallable, Category="GameFramework", meta=(DisplayName="BindOnActorInitStateChanged"))
+	void K2_BindOnActorInitStateChanged(FBaseGameFrameworkSet InGameFrameworkSet);
 	
-	UFUNCTION(BlueprintCallable, BlueprintPure, Category="GameFramework", meta=(DisplayName="Call_HaveAllFeaturesReachedInitState"))
-	bool GameFramework_CallHaveAllFeaturesReachedInitState(UGameFrameworkComponentManager* Manager, AActor* Actor, FGameplayTag RequiredState, FName ExcludingFeature = NAME_None) const;
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category="GameFramework", meta=(DisplayName="HaveAllFeaturesReachedInitState"))
+	bool K2_HaveAllFeaturesReachedInitState(UGameFrameworkComponentManager* Manager, AActor* Actor, FGameplayTag RequiredState, FName ExcludingFeature = NAME_None) const;
 	
 protected:
 	

@@ -7,5 +7,12 @@
 UBaseGameFrameworkComponent::UBaseGameFrameworkComponent(const FObjectInitializer& ObjectInitializer)
 	:Super(ObjectInitializer)
 {
-	BaseConstructionScript();
+	K2_ConstructionScript();
+}
+
+void UBaseGameFrameworkComponent::OnUnregister()
+{
+	K2_OnUnregister();
+	
+	Super::OnUnregister();
 }
