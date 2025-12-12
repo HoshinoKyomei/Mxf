@@ -45,6 +45,12 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "AbilitySystemComponent", meta=(DisplayName="InitAbilityActorInfo"))
 	virtual void InitAbilityActorInfo(AActor* InOwnerActor, AActor* InAvatarActor) override;
 	
+	UFUNCTION(BlueprintCallable, Category = "AbilitySystemComponent", meta=(DisplayName="SetNumericAttributeBase"))
+	void K2_SetNumericAttributeBase(const FGameplayAttribute &Attribute, float NewBaseValue);
+	
+	UFUNCTION(BlueprintCallable, Category = "AbilitySystemComponent", meta=(DisplayName="SetLooseGameplayTagCount"))
+	void K2_SetLooseGameplayTagCount(const FGameplayTag& GameplayTag, int32 NewCount);
+	
 	//~ End AbilitySystemComponent Interface
 	
 public:

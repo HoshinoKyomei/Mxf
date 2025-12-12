@@ -13,3 +13,13 @@ void UBaseAbilitySystemComponent::InitAbilityActorInfo(AActor* InOwnerActor, AAc
 {
 	Super::InitAbilityActorInfo(InOwnerActor, InAvatarActor);
 }
+
+void UBaseAbilitySystemComponent::K2_SetNumericAttributeBase(const FGameplayAttribute& Attribute, float NewBaseValue)
+{
+	SetNumericAttributeBase(Attribute, NewBaseValue);
+}
+
+void UBaseAbilitySystemComponent::K2_SetLooseGameplayTagCount(const FGameplayTag& GameplayTag, int32 NewCount)
+{
+	SetLooseGameplayTagCount(GameplayTag, NewCount);
+}
