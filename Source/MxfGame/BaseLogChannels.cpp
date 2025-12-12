@@ -38,3 +38,23 @@ FString GetClientServerContextString(UObject* ContextObject)
 
 	return TEXT("[]");
 }
+
+void UBaseLogChannels::LogChannels(const FString& Message, EBaseLogVerbosity Verbosity)
+{
+	// This will now print the message to the specified log category.
+	UE_LOG(LogBase, Log, TEXT("%s"), *Message);
+	switch (Verbosity)
+	{
+	case EBaseLogVerbosity::Warning:
+		UE_LOG(LogBase, Warning, TEXT("%s"), *Message);
+		break;
+	case EBaseLogVerbosity::Error:
+		UE_LOG(LogBase, Error, TEXT("%s"), *Message);
+		break;
+	case EBaseLogVerbosity::Log:
+	default:
+		UE_LOG(LogBase, Log, TEXT("%s"), *Message);
+		break;
+	}
+}
+
