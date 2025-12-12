@@ -13,6 +13,7 @@
 #include "Net/UnrealNetwork.h"
 #include "Player/BasePlayerController.h"
 #include "Player/BasePlayerState.h"
+#include "GameFramework/DamageType.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(BaseCharacter)
 
@@ -83,5 +84,79 @@ UBaseAbilitySystemComponent* ABaseCharacter::FindBaseAbilitySystemComponent() co
 
 UAbilitySystemComponent* ABaseCharacter::GetAbilitySystemComponent() const
 {
-	return FindAbilitySystemComponent();
+	return K2_FindAbilitySystemComponent();
+}
+
+void ABaseCharacter::GetOwnedGameplayTags(FGameplayTagContainer& TagContainer) const
+{
+	if (const UBaseAbilitySystemComponent* BaseASC = FindBaseAbilitySystemComponent())
+	{
+		BaseASC->GetOwnedGameplayTags(TagContainer);
+	}
+}
+
+bool ABaseCharacter::HasMatchingGameplayTag(FGameplayTag TagToCheck) const
+{
+	if (const UBaseAbilitySystemComponent* BaseASC = FindBaseAbilitySystemComponent())
+	{
+		return BaseASC->HasMatchingGameplayTag(TagToCheck);
+	}
+
+	return false;
+}
+
+bool ABaseCharacter::HasAllMatchingGameplayTags(const FGameplayTagContainer& TagContainer) const
+{
+	if (const UBaseAbilitySystemComponent* BaseASC = FindBaseAbilitySystemComponent())
+	{
+		return BaseASC->HasAllMatchingGameplayTags(TagContainer);
+	}
+
+	return false;
+}
+
+bool ABaseCharacter::HasAnyMatchingGameplayTags(const FGameplayTagContainer& TagContainer) const
+{
+	if (const UBaseAbilitySystemComponent* BaseASC = FindBaseAbilitySystemComponent())
+	{
+		return BaseASC->HasAnyMatchingGameplayTags(TagContainer);
+	}
+
+	return false;
+}
+
+void ABaseCharacter::OnRep_PlayerState()
+{
+	K2_OnRep_PlayerState();
+}
+
+void ABaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+{
+	K2_SetupPlayerInputComponent(PlayerInputComponent);
+}
+
+void ABaseCharacter::K2_SetupPlayerInputComponent_Implementation(UInputComponent* PlayerInputComponent)
+{
+	Super::SetupPlayerInputComponent(PlayerInputComponent);
+}
+
+void ABaseCharacter::K2_OnRep_PlayerState_Implementation()
+{
+	Super::OnRep_PlayerState();
+}
+
+void ABaseCharacter::FellOutOfWorld(const class UDamageType& dmgType)
+{
+	K2_FellOutOfWorld(&dmgType);
+}
+
+bool ABaseCharacter::CanJumpInternal_Implementation() const
+{
+	// same as ACharacter's implementation but without the crouch check
+	return JumpIsAllowedInternal();
+}
+
+void ABaseCharacter::K2_FellOutOfWorld_Implementation(const class UDamageType* dmgType)
+{
+	Super::FellOutOfWorld(*dmgType);
 }
