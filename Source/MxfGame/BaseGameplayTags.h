@@ -2,7 +2,12 @@
 
 #pragma once
 
+#include "CoreMinimal.h"
+#include "Kismet/BlueprintFunctionLibrary.h"
 #include "NativeGameplayTags.h"
+#include "BaseGameplayTags.generated.h"
+
+class UObject;
 
 namespace BaseGameplayTags
 {
@@ -57,4 +62,18 @@ namespace BaseGameplayTags
 	MXFGAME_API	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Movement_Mode_Flying);
 
 	MXFGAME_API	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Movement_Mode_Custom);
+};
+
+UCLASS()
+class MXFGAME_API UBaseGameplayTags : public UBlueprintFunctionLibrary
+{
+	GENERATED_BODY()
+	
+public:
+	
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "GameplayTag")
+	static const TMap<uint8, FGameplayTag>& GetMovementModeTagMap();
+
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "GameplayTag")
+	static const TMap<uint8, FGameplayTag>& GetCustomMovementModeTagMap();
 };

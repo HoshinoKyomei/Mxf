@@ -97,3 +97,12 @@ namespace BaseGameplayTags
 	}
 }
 
+const TMap<uint8, FGameplayTag>& UBaseGameplayTags::GetMovementModeTagMap()
+{
+	return BaseGameplayTags::MovementModeTagMap;
+}
+
+const TMap<uint8, FGameplayTag>& UBaseGameplayTags::GetCustomMovementModeTagMap()
+{
+	return BaseGameplayTags::CustomMovementModeTagMap;
+}
