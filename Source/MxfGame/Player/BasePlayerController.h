@@ -7,6 +7,8 @@
 
 #include "BasePlayerController.generated.h"
 
+class UBaseLocalPlayer;
+class UEnhancedInputLocalPlayerSubsystem;
 class ABasePlayerState;
 class APawn;
 class APlayerState;
@@ -36,4 +38,8 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "PlayerController")
 	UBaseAbilitySystemComponent* FindBaseAbilitySystemComponent() const;
+	
+	UFUNCTION(BlueprintPure, Category = "PlayerController")
+	UBaseLocalPlayer* GetBaseLocalPlayer() const;
+	
 };

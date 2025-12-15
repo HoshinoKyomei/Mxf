@@ -4,15 +4,21 @@
 
 #include "CoreMinimal.h"
 #include "Components/GameFrameworkInitStateInterface.h"
+#include "GameFramework/PlayerController.h"
+#include "GameFramework/PlayerState.h"
 #include "Components/PawnComponent.h"
 
 #include "BasePawnComponent.generated.h"
 
+enum class ETriggerEvent : uint8;
+class UBaseInputConfig;
 class UGameFrameworkComponentManager;
+class UInputComponent;
 class UObject;
 struct FActorInitStateChangedParams;
 struct FFrame;
 struct FGameplayTag;
+struct FInputActionValue;
 
 USTRUCT(BlueprintType)
 struct FBaseGameFrameworkSet
@@ -44,17 +50,24 @@ public:
 	
 	UBasePawnComponent(const FObjectInitializer& ObjectInitializer);
 	
+	UFUNCTION(BlueprintPure, Category="GameFramework", meta=(DeterminesOutputType="ComponentClass"))
+	UPawnComponent* FindPawnComponent(const AActor* Actor, const TSubclassOf<UPawnComponent> ComponentClass) const;
+	
 	//~ Check Pawn Interface
-	UFUNCTION(BlueprintCallable, BlueprintPure, Category="GameFramework", meta=(DisplayName="GetPawnChecked"))
-	APawn* GetBasePawnChecked() const { return GetPawnChecked<APawn>(); }
+	UFUNCTION(BlueprintPure, Category="GameFramework", meta=(DisplayName="GetPawnChecked"))
+	APawn* K2_GetPawnChecked() const { return GetPawnChecked<APawn>(); }
 	
-	UFUNCTION(BlueprintCallable, BlueprintPure, Category="GameFramework", meta=(DisplayName="GetPawn"))
-	APawn* GetBasePawn() const { return GetPawn<APawn>(); }
-	//~ End Check Pawn Interface
+	UFUNCTION(BlueprintPure, Category="GameFramework", meta=(DisplayName="GetPawn"))
+	APawn* K2_GetPawn() const { return GetPawn<APawn>(); }
 	
-	//~ Get Pawn Interface
-	UFUNCTION(BlueprintCallable, BlueprintPure, Category="GameFramework", meta=(DisplayName="GetController"))
-	AController* GetBaseController() const { return GetController<AController>(); }
+	UFUNCTION(BlueprintPure, Category="GameFramework", meta=(DisplayName="GetPlayerState"))
+	APlayerState* K2_GetPlayerState() const { return GetPlayerState<APlayerState>(); }
+	
+	UFUNCTION(BlueprintPure, Category="GameFramework", meta=(DisplayName="GetController"))
+	AController* K2_GetController() const { return GetController<AController>(); }
+	
+	UFUNCTION(BlueprintPure, Category="GameFramework", meta=(DisplayName="GetPlayerController"))
+	APlayerController* K2_GetPlayerController() const { return GetController<APlayerController>(); }
 	//~ End Get Pawn Interface
 	
 	/** The name of this overall feature, this one depends on the other named component features */
@@ -69,6 +82,10 @@ public:
 	virtual void CheckDefaultInitialization() override;
 	//~ End IGameFrameworkInitStateInterface interface
 	
+	/** Returns true if feature has reached query state or later */
+	UFUNCTION(BlueprintCallable, Category="GameFramework", meta=(DisplayName="HasFeatureReachedInitState"))
+	bool K2_HasFeatureReachedInitState(UGameFrameworkComponentManager* Manager, AActor* Actor, FName FeatureName, FGameplayTag FeatureState) const;
+
 protected:
 	
 	UFUNCTION(BlueprintImplementableEvent, meta=(DisplayName="ConstructionScript"))

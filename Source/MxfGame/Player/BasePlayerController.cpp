@@ -3,6 +3,7 @@
 
 #include "BasePlayerController.h"
 
+#include "BaseLocalPlayer.h"
 #include "BasePlayerState.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(BasePlayerController)
@@ -21,4 +22,9 @@ UBaseAbilitySystemComponent* ABasePlayerController::FindBaseAbilitySystemCompone
 {
 	const ABasePlayerState* BasePS = FindBasePlayerState();
 	return (BasePS ? BasePS->FindBaseAbilitySystemComponent() : nullptr);
+}
+
+UBaseLocalPlayer* ABasePlayerController::GetBaseLocalPlayer() const
+{
+	return Cast<UBaseLocalPlayer>(GetLocalPlayer());
 }

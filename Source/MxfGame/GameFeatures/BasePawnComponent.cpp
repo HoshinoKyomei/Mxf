@@ -4,6 +4,7 @@
 
 #include "BaseGameplayTags.h"
 #include "Components/GameFrameworkComponentManager.h"
+#include "Input/BaseInputComponent.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(BasePawnComponent)
 
@@ -17,8 +18,30 @@ UBasePawnComponent::UBasePawnComponent(const FObjectInitializer& ObjectInitializ
 	K2_ConstructionScript();
 }
 
+UPawnComponent* UBasePawnComponent::FindPawnComponent(const AActor* Actor, const TSubclassOf<UPawnComponent> ComponentClass) const
+{
+	if (GameFrameworkSet.IsEnabled && Actor)
+	{
+		if (UPawnComponent* FoundComponent = Cast<UPawnComponent>(Actor->FindComponentByClass(ComponentClass)))
+		{
+			return FoundComponent;
+		}
+		else
+		{
+			return nullptr;
+		}
+	}
+	else
+	{
+		FFrame::KismetExecutionMessage(
+				TEXT("Can't access pawn component outside of valid pawn context"), 
+				ELogVerbosity::Error);
+		return nullptr;
+	}
+}
+
 bool UBasePawnComponent::CanChangeInitState(UGameFrameworkComponentManager* Manager, FGameplayTag CurrentState,
-	FGameplayTag DesiredState) const
+                                            FGameplayTag DesiredState) const
 {
 	return K2_CanChangeInitState(Manager, CurrentState, DesiredState);
 }
@@ -37,6 +60,12 @@ void UBasePawnComponent::OnActorInitStateChanged(const FActorInitStateChangedPar
 void UBasePawnComponent::CheckDefaultInitialization()
 {
 	K2_CheckDefaultInitialization();
+}
+
+bool UBasePawnComponent::K2_HasFeatureReachedInitState(UGameFrameworkComponentManager* Manager, AActor* Actor,
+	FName FeatureName, FGameplayTag FeatureState) const
+{
+	return Manager->HasFeatureReachedInitState(Actor, FeatureName, FeatureState);
 }
 
 void UBasePawnComponent::K2_OnRegister_Implementation()

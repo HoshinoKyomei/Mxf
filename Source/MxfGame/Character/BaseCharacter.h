@@ -66,6 +66,9 @@ public:
 	virtual bool HasAnyMatchingGameplayTags(const FGameplayTagContainer& TagContainer) const override;
 	//~End of IGameplayTagAssetInterface
 	
+	UFUNCTION(BlueprintPure, Category = "Character", meta=(DisplayName = "GetInputComponent"))
+	UInputComponent* K2_GetInputComponent() const { return InputComponent;}
+	
 protected:
 	
 	virtual void OnRep_PlayerState() override;
