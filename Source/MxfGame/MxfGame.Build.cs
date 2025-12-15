@@ -32,7 +32,10 @@ public class MxfGame : ModuleRules
 		PrivateDependencyModuleNames.AddRange(
 			new string[] {
 				"EnhancedInput",
-                "NetCore"
+                "NetCore",
+                "CommonUI",
+                "CommonGame",
+                "CommonUser",
 			}
 		);
 

@@ -3,16 +3,24 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Character.h"
+#include "ModularCharacter.h"
+
 #include "BaseCharacter.generated.h"
 
-UCLASS()
-class MXFGAME_API ABaseCharacter : public ACharacter
+/**
+ * ABaseCharacter
+ *
+ *	The base character pawn class used by this project.
+ *	Responsible for sending events to pawn components.
+ *	New behavior should be added via pawn components when possible.
+ */
+UCLASS(Config = Game, Meta = (ShortTooltip = "The base character pawn class used by this project."))
+class MXFGAME_API ABaseCharacter : public AModularCharacter
 {
 	GENERATED_BODY()
 
 public:
 
-	ABaseCharacter();
+	ABaseCharacter(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 	
 };
