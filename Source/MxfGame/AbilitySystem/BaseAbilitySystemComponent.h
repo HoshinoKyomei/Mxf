@@ -26,8 +26,6 @@ public:
 	
 	UBaseAbilitySystemComponent(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 	
-public:
-	
 	//~ AbilitySystemComponent Interface
 	/** Returns the avatar actor for this component */
 	UFUNCTION(BlueprintCallable, Category = "AbilitySystemComponent", meta=(DisplayName="GetAvatarActor"))
@@ -47,12 +45,39 @@ public:
 	
 	UFUNCTION(BlueprintCallable, Category = "AbilitySystemComponent", meta=(DisplayName="SetNumericAttributeBase"))
 	void K2_SetNumericAttributeBase(const FGameplayAttribute &Attribute, float NewBaseValue);
+	UFUNCTION(BlueprintCallable, Category = "AbilitySystemComponent", meta=(DisplayName="CancelAbilities"))
+	void K2_CancelAbilities(const FGameplayTagContainer WithTags, FGameplayTagContainer WithoutTags, UGameplayAbility* Ignore);
+	
+	UFUNCTION(BlueprintCallable, Category = "AbilitySystemComponent", meta=(DisplayName="RemoveAllGameplayCues"))
+	void K2_RemoveAllGameplayCues();
+	
+	UFUNCTION(BlueprintCallable, Category = "AbilitySystemComponent", meta=(DisplayName="SetAvatarActor"))
+	void K2_SetAvatarActor(AActor* InAvatarActor);
+	
+	UFUNCTION(BlueprintCallable, Category = "AbilitySystemComponent", meta=(DisplayName="ApplyModToAttribute"))
+	void K2_ApplyModToAttribute(const FGameplayAttribute &Attribute, TEnumAsByte<EGameplayModOp::Type> ModifierOp, float ModifierMagnitude);
+	
+	UFUNCTION(BlueprintCallable, Category = "AbilitySystemComponent", meta=(DisplayName="ClearActorInfo"))
+	void K2_ClearActorInfo();
+
+	//~ End AbilitySystemComponent Interface
+	
+	UFUNCTION(BlueprintCallable, Category = "AbilitySystemComponent", meta=(DisplayName="AbilityInputTagPressed"))
+	void AbilityInputTagPressed(const FGameplayTag& InputTag);
+	UFUNCTION(BlueprintCallable, Category = "AbilitySystemComponent", meta=(DisplayName="AbilityInputTagReleased"))
+	void AbilityInputTagReleased(const FGameplayTag& InputTag);
+	
+	UFUNCTION(BlueprintImplementableEvent, Category = "AbilitySystemComponent", DisplayName="PressedAbilitySpec")
+	void K2_PressedAbilitySpec(const FGameplayAbilitySpecHandle& Handle);
+	UFUNCTION(BlueprintImplementableEvent, Category = "AbilitySystemComponent", DisplayName="ReleasedAbilitySpec")
+	void K2_ReleasedAbilitySpec(const FGameplayAbilitySpecHandle& Handle);
+	
+protected:
+	
+	UFUNCTION(BlueprintImplementableEvent, meta=(DisplayName="ConstructionScript"))
+	void K2_ConstructionScript();
 	
 	UFUNCTION(BlueprintCallable, Category = "AbilitySystemComponent", meta=(DisplayName="SetLooseGameplayTagCount"))
 	void K2_SetLooseGameplayTagCount(const FGameplayTag& GameplayTag, int32 NewCount);
-	
-	//~ End AbilitySystemComponent Interface
-	
-public:
-	
+
 };

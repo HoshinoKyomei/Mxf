@@ -83,6 +83,9 @@ protected:
 	UFUNCTION(BlueprintCallable, Category="Health", meta=(DisplayName="SetDamage"))
 	void K2_SetDamage(float NewValue) { SetDamage(NewValue); }
 
+	UFUNCTION(BlueprintPure, Category="Health", meta=(DisplayName="GetHealthAttribute"))
+	static FGameplayAttribute K2_GetHealthAttribute() { return GetHealthAttribute(); }
+	
 private:
 
 	// The current health attribute.  The health will be capped by the max health attribute.  Health is hidden from modifiers so only executions can modify it.
