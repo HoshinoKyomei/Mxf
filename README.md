@@ -11,6 +11,7 @@ Developed with Unreal Engine 5.7
 - Custom
 	- ModularGameplayActors
     - TemplateResources
+    - ToonCharacterShader
 
 ## Frame structure
 - ModularActor
