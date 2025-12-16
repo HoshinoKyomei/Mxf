@@ -2,7 +2,9 @@
 
 #include "BaseGameMode.h"
 
+#include "BaseLogChannels.h"
 #include "Character/BaseCharacter.h"
+#include "Character/BasePawnExtensionComponent.h"
 #include "Player/BasePlayerController.h"
 #include "Player/BasePlayerState.h"
 

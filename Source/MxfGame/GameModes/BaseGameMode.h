@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "ModularGameMode.h"
+#include "Character/BasePawnData.h"
 #include "BaseGameMode.generated.h"
 
 /**

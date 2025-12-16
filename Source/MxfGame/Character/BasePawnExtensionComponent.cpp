@@ -11,6 +11,7 @@
 #include "BaseLogChannels.h"
 #include "BasePawnData.h"
 #include "Net/UnrealNetwork.h"
+#include "Player/BasePlayerState.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(BasePawnExtensionComponent)
 
@@ -271,7 +272,21 @@ bool UBasePawnExtensionComponent::CanChangeInitState(UGameFrameworkComponentMana
 
 void UBasePawnExtensionComponent::HandleChangeInitState(UGameFrameworkComponentManager* Manager, FGameplayTag CurrentState, FGameplayTag DesiredState)
 {
-	if (DesiredState == BaseGameplayTags::InitState_DataInitialized)
+	if (DesiredState == BaseGameplayTags::InitState_Spawned)
+	{
+		// Try to get pawn data from the controller's PlayerState
+		if (AController* Controller = GetController<AController>())
+		{
+			if (const ABasePlayerState* BasePS = Controller->GetPlayerState<ABasePlayerState>())
+			{
+				if (const UBasePawnData* PlayerStatePawnData = BasePS->GetPawnData<UBasePawnData>())
+				{
+					SetPawnData(PlayerStatePawnData);
+				}
+			}
+		}
+	}
+	else if (DesiredState == BaseGameplayTags::InitState_DataInitialized)
 	{
 		// This is currently all handled by other components listening to this state change
 	}

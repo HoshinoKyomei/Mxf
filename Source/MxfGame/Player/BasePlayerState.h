@@ -75,7 +75,7 @@ protected:
 	UFUNCTION()
 	void OnRep_PawnData();
 
-	UPROPERTY(ReplicatedUsing = OnRep_PawnData)
+	UPROPERTY(EditAnywhere, Category="Base|PlayerState", ReplicatedUsing = OnRep_PawnData)
 	TObjectPtr<const UBasePawnData> PawnData;
 	
 private:
