@@ -152,3 +152,15 @@ void UBaseAbilitySystemComponent::SetTagRelationshipMapping(UBaseAbilityTagRelat
 {
 	TagRelationshipMapping = NewMapping;
 }
+
+void UBaseAbilitySystemComponent::TryActivateAbilitiesOnSpawn()
+{
+	ABILITYLIST_SCOPE_LOCK();
+	for (const FGameplayAbilitySpec& AbilitySpec : ActivatableAbilities.Items)
+	{
+		if (const UBaseGameplayAbility* LyraAbilityCDO = Cast<UBaseGameplayAbility>(AbilitySpec.Ability))
+		{
+			LyraAbilityCDO->TryActivateAbilityOnSpawn(AbilityActorInfo.Get(), AbilitySpec);
+		}
+	}
+}
