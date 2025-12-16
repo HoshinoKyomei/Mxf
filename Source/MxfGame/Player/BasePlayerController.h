@@ -7,6 +7,9 @@
 
 #include "BasePlayerController.generated.h"
 
+class ABasePlayerState;
+class UBaseAbilitySystemComponent;
+
 /**
  * ABasePlayerController
  *
@@ -20,4 +23,14 @@ class MXFGAME_API ABasePlayerController : public ACommonPlayerController
 public:
 	
 	ABasePlayerController(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
+
+	UFUNCTION(BlueprintCallable, Category = "Base|PlayerController")
+	ABasePlayerState* GetBasePlayerState() const;
+
+	UFUNCTION(BlueprintCallable, Category = "Base|PlayerController")
+	UBaseAbilitySystemComponent* GetBaseAbilitySystemComponent() const;
+	
+	//~Begin of APlayerController interface
+	virtual void PostProcessInput(const float DeltaTime, const bool bGamePaused) override;
+	//~End of APlayerController interface
 };

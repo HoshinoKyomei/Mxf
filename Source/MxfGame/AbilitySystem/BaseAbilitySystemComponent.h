@@ -4,8 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "AbilitySystemComponent.h"
+#include "NativeGameplayTags.h"
 
 #include "BaseAbilitySystemComponent.generated.h"
+
+class UBaseAbilityTagRelationshipMapping;
 
 /**
  * UBaseAbilitySystemComponent
@@ -20,5 +23,26 @@ class MXFGAME_API UBaseAbilitySystemComponent : public UAbilitySystemComponent
 public:
 
 	UBaseAbilitySystemComponent(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
+
+	// Ability Input
+	void AbilityInputTagPressed(const FGameplayTag& InputTag);
+	void AbilityInputTagReleased(const FGameplayTag& InputTag);
 	
+	void ProcessAbilityInput(float DeltaTime, bool bGamePaused);
+	void ClearAbilityInput();
+	
+protected:
+
+	// If set, this table is used to look up tag relationships for activating and cancel
+	UPROPERTY()
+	TObjectPtr<UBaseAbilityTagRelationshipMapping> TagRelationshipMapping;
+
+	// Handles to abilities that had their input pressed this frame.
+	TArray<FGameplayAbilitySpecHandle> InputPressedSpecHandles;
+
+	// Handles to abilities that had their input released this frame.
+	TArray<FGameplayAbilitySpecHandle> InputReleasedSpecHandles;
+
+	// Handles to abilities that have their input held.
+	TArray<FGameplayAbilitySpecHandle> InputHeldSpecHandles;
 };

@@ -9,4 +9,5 @@
 UBaseGameplayAbility::UBaseGameplayAbility(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
+	ActivationPolicy = EBaseAbilityActivationPolicy::OnInputTriggered;
 }
