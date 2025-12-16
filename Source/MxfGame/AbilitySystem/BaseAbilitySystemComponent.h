@@ -31,6 +31,9 @@ public:
 	void ProcessAbilityInput(float DeltaTime, bool bGamePaused);
 	void ClearAbilityInput();
 	
+	/** Sets the current tag relationship mapping, if null it will clear it out */
+	void SetTagRelationshipMapping(UBaseAbilityTagRelationshipMapping* NewMapping);
+	
 protected:
 
 	// If set, this table is used to look up tag relationships for activating and cancel

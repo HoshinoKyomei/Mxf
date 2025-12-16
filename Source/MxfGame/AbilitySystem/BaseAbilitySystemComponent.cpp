@@ -46,7 +46,7 @@ void UBaseAbilitySystemComponent::AbilityInputTagReleased(const FGameplayTag& In
 
 void UBaseAbilitySystemComponent::ProcessAbilityInput(float DeltaTime, bool bGamePaused)
 {
-		if (HasMatchingGameplayTag(TAG_Gameplay_AbilityInputBlocked))
+	if (HasMatchingGameplayTag(TAG_Gameplay_AbilityInputBlocked))
 	{
 		ClearAbilityInput();
 		return;
@@ -146,4 +146,9 @@ void UBaseAbilitySystemComponent::ClearAbilityInput()
 	InputPressedSpecHandles.Reset();
 	InputReleasedSpecHandles.Reset();
 	InputHeldSpecHandles.Reset();
+}
+
+void UBaseAbilitySystemComponent::SetTagRelationshipMapping(UBaseAbilityTagRelationshipMapping* NewMapping)
+{
+	TagRelationshipMapping = NewMapping;
 }
