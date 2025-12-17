@@ -2,17 +2,18 @@
 
 #include "Character/BaseHealthComponent.h"
 
+#include "AbilitySystem/Attributes/BaseAttributeSet.h"
 #include "BaseLogChannels.h"
 // #include "System/BaseAssetManager.h"
 // #include "System/BaseGameData.h"
 #include "BaseGameplayTags.h"
 #include "Net/UnrealNetwork.h"
-// #include "GameplayEffectExtension.h"
+#include "GameplayEffectExtension.h"
 #include "AbilitySystem/BaseAbilitySystemComponent.h"
 #include "AbilitySystem/Attributes/BaseHealthSet.h"
-#include "Messages/BaseVerbMessage.h"
-#include "Messages/BaseVerbMessageHelpers.h"
-#include "GameFramework/GameplayMessageSubsystem.h"
+// #include "Messages/BaseVerbMessage.h"
+// #include "Messages/BaseVerbMessageHelpers.h"
+// #include "GameFramework/GameplayMessageSubsystem.h"
 #include "GameFramework/PlayerState.h"
 #include "Engine/World.h"
 
@@ -166,19 +167,19 @@ void UBaseHealthComponent::HandleOutOfHealth(AActor* DamageInstigator, AActor* D
 		}
 
 		// Send a standardized verb message that other systems can observe
-		{
-			FBaseVerbMessage Message;
-			Message.Verb = TAG_Base_Elimination_Message;
-			Message.Instigator = DamageInstigator;
-			Message.InstigatorTags = *DamageEffectSpec->CapturedSourceTags.GetAggregatedTags();
-			Message.Target = UBaseVerbMessageHelpers::GetPlayerStateFromObject(AbilitySystemComponent->GetAvatarActor());
-			Message.TargetTags = *DamageEffectSpec->CapturedTargetTags.GetAggregatedTags();
-			//@TODO: Fill out context tags, and any non-ability-system source/instigator tags
-			//@TODO: Determine if it's an opposing team kill, self-own, team kill, etc...
-
-			UGameplayMessageSubsystem& MessageSystem = UGameplayMessageSubsystem::Get(GetWorld());
-			MessageSystem.BroadcastMessage(Message.Verb, Message);
-		}
+		// {
+		// 	FBaseVerbMessage Message;
+		// 	Message.Verb = TAG_Base_Elimination_Message;
+		// 	Message.Instigator = DamageInstigator;
+		// 	Message.InstigatorTags = *DamageEffectSpec->CapturedSourceTags.GetAggregatedTags();
+		// 	Message.Target = UBaseVerbMessageHelpers::GetPlayerStateFromObject(AbilitySystemComponent->GetAvatarActor());
+		// 	Message.TargetTags = *DamageEffectSpec->CapturedTargetTags.GetAggregatedTags();
+		// 	//@TODO: Fill out context tags, and any non-ability-system source/instigator tags
+		// 	//@TODO: Determine if it's an opposing team kill, self-own, team kill, etc...
+		//
+		// 	UGameplayMessageSubsystem& MessageSystem = UGameplayMessageSubsystem::Get(GetWorld());
+		// 	MessageSystem.BroadcastMessage(Message.Verb, Message);
+		// }
 
 		//@TODO: assist messages (could compute from damage dealt elsewhere)?
 	}
@@ -285,28 +286,27 @@ void UBaseHealthComponent::DamageSelfDestruct(bool bFellOutOfWorld)
 		// 	UE_LOG(LogBase, Error, TEXT("BaseHealthComponent: DamageSelfDestruct failed for owner [%s]. Unable to find gameplay effect [%s]."), *GetNameSafe(GetOwner()), *UBaseGameData::Get().DamageGameplayEffect_SetByCaller.GetAssetName());
 		// 	return;
 		// }
-		//
+
 		// FGameplayEffectSpecHandle SpecHandle = AbilitySystemComponent->MakeOutgoingSpec(DamageGE, 1.0f, AbilitySystemComponent->MakeEffectContext());
 		// FGameplayEffectSpec* Spec = SpecHandle.Data.Get();
-		//
+
 		// if (!Spec)
 		// {
 		// 	UE_LOG(LogBase, Error, TEXT("BaseHealthComponent: DamageSelfDestruct failed for owner [%s]. Unable to make outgoing spec for [%s]."), *GetNameSafe(GetOwner()), *GetNameSafe(DamageGE));
 		// 	return;
 		// }
-		//
+		
 		// Spec->AddDynamicAssetTag(TAG_Gameplay_DamageSelfDestruct);
-		//
+		
 		// if (bFellOutOfWorld)
 		// {
 		// 	Spec->AddDynamicAssetTag(TAG_Gameplay_FellOutOfWorld);
 		// }
-		//
+		
 		// const float DamageAmount = GetMaxHealth();
-		//
+		
 		// Spec->SetSetByCallerMagnitude(BaseGameplayTags::SetByCaller_Damage, DamageAmount);
 		// AbilitySystemComponent->ApplyGameplayEffectSpecToSelf(*Spec);
-
-		UE_LOG(LogBase, Warning, TEXT("BaseHealthComponent: DamageSelfDestruct for owner [%s]."), *GetNameSafe(GetOwner()));
 	}
 }
+

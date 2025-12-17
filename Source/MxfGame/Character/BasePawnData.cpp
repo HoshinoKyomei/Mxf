@@ -1,4 +1,4 @@
-﻿// Copyright Epic Games, Inc. All Rights Reserved.
+// Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "BasePawnData.h"
 
@@ -9,5 +9,5 @@ UBasePawnData::UBasePawnData(const FObjectInitializer& ObjectInitializer)
 {
 	PawnClass = nullptr;
 	InputConfig = nullptr;
-	// DefaultCameraMode = nullptr;
 }
+

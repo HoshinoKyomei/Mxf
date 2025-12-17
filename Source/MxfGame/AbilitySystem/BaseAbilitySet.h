@@ -1,8 +1,7 @@
-﻿// Copyright Epic Games, Inc. All Rights Reserved.
+// Copyright Epic Games, Inc. All Rights Reserved.
 
 #pragma once
 
-#include "CoreMinimal.h"
 #include "ActiveGameplayEffectHandle.h"
 #include "Engine/DataAsset.h"
 #include "AttributeSet.h"
@@ -16,6 +15,7 @@ class UGameplayEffect;
 class UBaseAbilitySystemComponent;
 class UBaseGameplayAbility;
 class UObject;
+
 
 /**
  * FBaseAbilitySet_GameplayAbility
@@ -31,7 +31,7 @@ public:
 
 	// Gameplay ability to grant.
 	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<UBaseGameplayAbility> Ability = nullptr;
+	TSubclassOf<UBaseGameplayAbility> Ability;
 
 	// Level of ability to grant.
 	UPROPERTY(EditDefaultsOnly)
@@ -57,7 +57,7 @@ public:
 
 	// Gameplay effect to grant.
 	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<UGameplayEffect> GameplayEffect = nullptr;
+	TSubclassOf<UGameplayEffect> GameplayEffect;
 
 	// Level of gameplay effect to grant.
 	UPROPERTY(EditDefaultsOnly)
@@ -113,6 +113,7 @@ protected:
 	UPROPERTY()
 	TArray<TObjectPtr<UAttributeSet>> GrantedAttributeSets;
 };
+
 
 /**
  * UBaseAbilitySet

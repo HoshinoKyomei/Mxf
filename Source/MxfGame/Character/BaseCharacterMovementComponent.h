@@ -1,4 +1,4 @@
-// Copyright Soatori Games, Inc. All Rights Reserved.
+// Copyright Epic Games, Inc. All Rights Reserved.
 
 #pragma once
 
@@ -37,6 +37,7 @@ struct FBaseCharacterGroundInfo
 	float GroundDistance;
 };
 
+
 /**
  * UBaseCharacterMovementComponent
  *
@@ -46,24 +47,35 @@ UCLASS(Config = Game)
 class MXFGAME_API UBaseCharacterMovementComponent : public UCharacterMovementComponent
 {
 	GENERATED_BODY()
-	
+
 public:
-	
+
 	UBaseCharacterMovementComponent(const FObjectInitializer& ObjectInitializer);
 
+	virtual void SimulateMovement(float DeltaTime) override;
+
 	virtual bool CanAttemptJump() const override;
-	
+
 	// Returns the current ground info.  Calling this will update the ground info if it's out of date.
-	UFUNCTION(BlueprintCallable, Category = "CharacterMovement")
+	UFUNCTION(BlueprintCallable, Category = "Base|CharacterMovement")
 	const FBaseCharacterGroundInfo& GetGroundInfo();
-	
+
+	void SetReplicatedAcceleration(const FVector& InAcceleration);
+
 	//~UMovementComponent interface
 	virtual FRotator GetDeltaRotation(float DeltaTime) const override;
 	virtual float GetMaxSpeed() const override;
 	//~End of UMovementComponent interface
-	
+
+protected:
+
+	virtual void InitializeComponent() override;
+
 protected:
 
 	// Cached ground info for the character.  Do not access this directly!  It's only updated when accessed via GetGroundInfo().
 	FBaseCharacterGroundInfo CachedGroundInfo;
+
+	UPROPERTY(Transient)
+	bool bHasReplicatedAcceleration = false;
 };

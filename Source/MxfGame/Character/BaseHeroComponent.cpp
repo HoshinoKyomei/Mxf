@@ -1,6 +1,4 @@
-﻿// Copyright Epic Games, Inc. All Rights Reserved.
-
-#include "BaseHeroComponent.h"
+// Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "BaseHeroComponent.h"
 #include "Components/GameFrameworkComponentDelegates.h"
@@ -9,6 +7,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "Player/BasePlayerController.h"
 #include "Player/BasePlayerState.h"
+// #include "Player/BaseLocalPlayer.h"
 #include "Character/BasePawnExtensionComponent.h"
 #include "Character/BasePawnData.h"
 #include "Character/BaseCharacter.h"
@@ -27,13 +26,11 @@
 #include "Misc/UObjectToken.h"
 #endif	// WITH_EDITOR
 
-#define BIND_MEMBER_FUNCTION(FunctionName) &ThisClass::FunctionName
-
 namespace BaseHero
 {
 	static const float LookYawRate = 300.0f;
 	static const float LookPitchRate = 165.0f;
-}
+};
 
 const FName UBaseHeroComponent::NAME_BindInputsNow("BindInputsNow");
 const FName UBaseHeroComponent::NAME_ActorFeatureName("Hero");
@@ -47,7 +44,7 @@ UBaseHeroComponent::UBaseHeroComponent(const FObjectInitializer& ObjectInitializ
 void UBaseHeroComponent::OnRegister()
 {
 	Super::OnRegister();
-	
+
 	if (!GetPawn<APawn>())
 	{
 		UE_LOG(LogBase, Error, TEXT("[UBaseHeroComponent::OnRegister] This component has been added to a blueprint whose base class is not a Pawn. To use this component, it MUST be placed on a Pawn Blueprint."));
@@ -73,8 +70,7 @@ void UBaseHeroComponent::OnRegister()
 	}
 }
 
-bool UBaseHeroComponent::CanChangeInitState(UGameFrameworkComponentManager* Manager, FGameplayTag CurrentState,
-	FGameplayTag DesiredState) const
+bool UBaseHeroComponent::CanChangeInitState(UGameFrameworkComponentManager* Manager, FGameplayTag CurrentState, FGameplayTag DesiredState) const
 {
 	check(Manager);
 
@@ -118,7 +114,7 @@ bool UBaseHeroComponent::CanChangeInitState(UGameFrameworkComponentManager* Mana
 		{
 			ABasePlayerController* BasePC = GetController<ABasePlayerController>();
 
-			// The input component and local player are required when locally controlled.
+			// The input component and local player is required when locally controlled.
 			if (!Pawn->InputComponent || !BasePC || !BasePC->GetLocalPlayer())
 			{
 				return false;
@@ -129,7 +125,7 @@ bool UBaseHeroComponent::CanChangeInitState(UGameFrameworkComponentManager* Mana
 	}
 	else if (CurrentState == BaseGameplayTags::InitState_DataAvailable && DesiredState == BaseGameplayTags::InitState_DataInitialized)
 	{
-		// Wait for the player state and extension component
+		// Wait for player state and extension component
 		ABasePlayerState* BasePS = GetPlayerState<ABasePlayerState>();
 
 		return BasePS && Manager->HasFeatureReachedInitState(Pawn, UBasePawnExtensionComponent::NAME_ActorFeatureName, BaseGameplayTags::InitState_DataInitialized);
@@ -143,8 +139,7 @@ bool UBaseHeroComponent::CanChangeInitState(UGameFrameworkComponentManager* Mana
 	return false;
 }
 
-void UBaseHeroComponent::HandleChangeInitState(UGameFrameworkComponentManager* Manager, FGameplayTag CurrentState,
-	FGameplayTag DesiredState)
+void UBaseHeroComponent::HandleChangeInitState(UGameFrameworkComponentManager* Manager, FGameplayTag CurrentState, FGameplayTag DesiredState)
 {
 	if (CurrentState == BaseGameplayTags::InitState_DataAvailable && DesiredState == BaseGameplayTags::InitState_DataInitialized)
 	{
@@ -155,11 +150,11 @@ void UBaseHeroComponent::HandleChangeInitState(UGameFrameworkComponentManager* M
 			return;
 		}
 
-		// const UBasePawnData* PawnData = nullptr;
+		const UBasePawnData* PawnData = nullptr;
 
 		if (UBasePawnExtensionComponent* PawnExtComp = UBasePawnExtensionComponent::FindPawnExtensionComponent(Pawn))
 		{
-			// PawnData = PawnExtComp->GetPawnData<UBasePawnData>();
+			PawnData = PawnExtComp->GetPawnData<UBasePawnData>();
 
 			// The player state holds the persistent data for this player (state that persists across deaths and multiple pawns).
 			// The ability system component and attribute sets live on the player state.
@@ -175,7 +170,10 @@ void UBaseHeroComponent::HandleChangeInitState(UGameFrameworkComponentManager* M
 		}
 
 		// Hook up the delegate for all pawns, in case we spectate later
-		// Cameras
+		if (PawnData)
+		{
+			// CameraMode
+		}
 	}
 }
 
@@ -202,7 +200,7 @@ void UBaseHeroComponent::CheckDefaultInitialization()
 void UBaseHeroComponent::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
 	// Listen for when the pawn extension component changes init state
 	BindOnActorInitStateChanged(UBasePawnExtensionComponent::NAME_ActorFeatureName, FGameplayTag(), false);
 
@@ -214,7 +212,7 @@ void UBaseHeroComponent::BeginPlay()
 void UBaseHeroComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
 	UnregisterInitStateFeature();
-	
+
 	Super::EndPlay(EndPlayReason);
 }
 
@@ -231,6 +229,7 @@ void UBaseHeroComponent::InitializePlayerInput(UInputComponent* PlayerInputCompo
 	const APlayerController* PC = GetController<APlayerController>();
 	check(PC);
 
+	// const UBaseLocalPlayer* LP = Cast<UBaseLocalPlayer>(PC->GetLocalPlayer());
 	const ULocalPlayer* LP = PC->GetLocalPlayer();
 	check(LP);
 
@@ -245,24 +244,24 @@ void UBaseHeroComponent::InitializePlayerInput(UInputComponent* PlayerInputCompo
 		{
 			if (const UBaseInputConfig* InputConfig = PawnData->InputConfig)
 			{
-				// for (const FInputMappingContextAndPriority& Mapping: DefaultInputMappings)
-				// {
-				// 	if (UInputMappingContext* IMC = Mapping.InputMapping.LoadSynchronous())
-				// 	{
-				// 		if (Mapping.bRegisterWithSettings)
-				// 		{
-				// 			if (UEnhancedInputUserSettings* Settings = Subsystem->GetUserSettings())
-				// 			{
-				// 				Settings->RegisterInputMappingContext(IMC);
-				// 			}
-				// 			
-				// 			FModifyContextOptions Options = {};
-				// 			Options.bIgnoreAllPressedKeysUntilRelease = false;
-				// 			// Actually add the config to the local player	
-				// 			Subsystem->AddMappingContext(IMC, Mapping.Priority, Options);
-				// 		}
-				// 	}
-				// }
+				for (const FInputMappingContextAndPriority& Mapping : DefaultInputMappings)
+				{
+					if (UInputMappingContext* IMC = Mapping.InputMapping.LoadSynchronous())
+					{
+						if (Mapping.bRegisterWithSettings)
+						{
+							if (UEnhancedInputUserSettings* Settings = Subsystem->GetUserSettings())
+							{
+								Settings->RegisterInputMappingContext(IMC);
+							}
+							
+							FModifyContextOptions Options = {};
+							Options.bIgnoreAllPressedKeysUntilRelease = false;
+							// Actually add the config to the local player							
+							Subsystem->AddMappingContext(IMC, Mapping.Priority, Options);
+						}
+					}
+				}
 
 				// The Base Input Component has some additional functions to map Gameplay Tags to an Input Action.
 				// If you want this functionality but still want to change your input component class, make it a subclass
@@ -372,7 +371,7 @@ void UBaseHeroComponent::Input_Move_Implementation(const FInputActionValue& Inpu
 	APawn* Pawn = GetPawn<APawn>();
 	AController* Controller = Pawn ? Pawn->GetController() : nullptr;
 
-	// If the player has attempted to move again, then cancel auto running
+	// If the player has attempted to move again then cancel auto running
 	if (ABasePlayerController* BaseController = Cast<ABasePlayerController>(Controller))
 	{
 		BaseController->SetIsAutoRunning(false);
@@ -463,4 +462,3 @@ void UBaseHeroComponent::Input_AutoRun_Implementation(const FInputActionValue& I
 		}	
 	}
 }
-

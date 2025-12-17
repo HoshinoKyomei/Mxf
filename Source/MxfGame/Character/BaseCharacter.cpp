@@ -1,6 +1,6 @@
-﻿// Copyright Epic Games, Inc. All Rights Reserved.
+// Copyright Soatori Games, Inc. All Rights Reserved.
 
-#include "BaseCharacter.h"
+#include "Character/BaseCharacter.h"
 
 #include "AbilitySystem/BaseAbilitySystemComponent.h"
 #include "Character/BaseHealthComponent.h"
@@ -9,16 +9,17 @@
 #include "Components/SkeletalMeshComponent.h"
 #include "BaseCharacterMovementComponent.h"
 #include "BaseGameplayTags.h"
-// #include "BaseLogChannels.h"
-// #include "Net/UnrealNetwork.h"
+#include "BaseLogChannels.h"
+#include "Net/UnrealNetwork.h"
 #include "Player/BasePlayerController.h"
 #include "Player/BasePlayerState.h"
+// #include "System/BaseSignificanceManager.h"
 #include "TimerManager.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(BaseCharacter)
 
-static FName NAME_BaseCharacterCollisionProfile_Capsule(TEXT("BasePawnCapsule"));
-static FName NAME_BaseCharacterCollisionProfile_Mesh(TEXT("BasePawnMesh"));
+static FName NAME_BaseCharacterCollisionProfile_Capsule(TEXT("BaseCharacterCapsule"));
+static FName NAME_BaseCharacterCollisionProfile_Mesh(TEXT("BaseCharacterMesh"));
 
 ABaseCharacter::ABaseCharacter(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer.SetDefaultSubobjectClass<UBaseCharacterMovementComponent>(ACharacter::CharacterMovementComponentName))
@@ -70,9 +71,42 @@ ABaseCharacter::ABaseCharacter(const FObjectInitializer& ObjectInitializer)
 	CrouchedEyeHeight = 50.0f;
 }
 
-ABasePlayerController* ABaseCharacter::GetBasePlayerController() const
+
+void ABaseCharacter::PreInitializeComponents()
 {
-	return Cast<ABasePlayerController>(GetController());
+	Super::PreInitializeComponents();
+}
+
+void ABaseCharacter::BeginPlay()
+{
+	Super::BeginPlay();
+
+// 	UWorld* World = GetWorld();
+
+// 	const bool bRegisterWithSignificanceManager = !IsNetMode(NM_DedicatedServer);
+// 	if (bRegisterWithSignificanceManager)
+// 	{
+// 		if (UBaseSignificanceManager* SignificanceManager = USignificanceManager::Get<UBaseSignificanceManager>(World))
+// 		{
+// //@TODO: SignificanceManager->RegisterObject(this, (EFortSignificanceType)SignificanceType);
+// 		}
+// 	}
+}
+
+void ABaseCharacter::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	Super::EndPlay(EndPlayReason);
+
+	// UWorld* World = GetWorld();
+
+	// const bool bRegisterWithSignificanceManager = !IsNetMode(NM_DedicatedServer);
+	// if (bRegisterWithSignificanceManager)
+	// {
+	// 	if (UBaseSignificanceManager* SignificanceManager = USignificanceManager::Get<UBaseSignificanceManager>(World))
+	// 	{
+	// 		SignificanceManager->UnregisterObject(this);
+	// 	}
+	// }
 }
 
 void ABaseCharacter::Reset()
@@ -82,6 +116,21 @@ void ABaseCharacter::Reset()
 	K2_OnReset();
 
 	UnInitAndDestroy();
+}
+
+void ABaseCharacter::GetLifetimeReplicatedProps(TArray< FLifetimeProperty >& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+}
+
+void ABaseCharacter::NotifyControllerChanged()
+{
+	Super::NotifyControllerChanged();
+}
+
+ABasePlayerController* ABaseCharacter::GetBasePlayerController() const
+{
+	return Cast<ABasePlayerController>(GetController());
 }
 
 ABasePlayerState* ABaseCharacter::GetBasePlayerState() const

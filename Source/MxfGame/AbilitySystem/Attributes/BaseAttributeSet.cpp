@@ -1,4 +1,4 @@
-﻿// Copyright Soatori Games, Inc. All Rights Reserved.
+// Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "BaseAttributeSet.h"
 
@@ -7,6 +7,7 @@
 #include UE_INLINE_GENERATED_CPP_BY_NAME(BaseAttributeSet)
 
 class UWorld;
+
 
 UBaseAttributeSet::UBaseAttributeSet()
 {
@@ -25,7 +26,3 @@ UBaseAbilitySystemComponent* UBaseAttributeSet::GetBaseAbilitySystemComponent() 
 	return Cast<UBaseAbilitySystemComponent>(GetOwningAbilitySystemComponent());
 }
 
-UAbilitySystemComponent* UBaseAttributeSet::GetAbilitySystemComponent() const
-{
-	return GetBaseAbilitySystemComponent();
-}

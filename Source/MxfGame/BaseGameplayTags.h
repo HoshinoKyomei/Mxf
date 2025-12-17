@@ -46,7 +46,7 @@ namespace BaseGameplayTags
 	MXFGAME_API	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Status_Death_Dying);
 	MXFGAME_API	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Status_Death_Dead);
 
-	// These are mappings from MovementMode enums to GameplayTags associated with those enums (below)
+	// These are the mappings from MovementMode enums to GameplayTags associated with those enums (below)
 	MXFGAME_API	extern const TMap<uint8, FGameplayTag> MovementModeTagMap;
 	MXFGAME_API	extern const TMap<uint8, FGameplayTag> CustomMovementModeTagMap;
 

@@ -1,4 +1,4 @@
-﻿// Copyright Epic Games, Inc. All Rights Reserved.
+// Copyright Epic Games, Inc. All Rights Reserved.
 
 #pragma once
 
@@ -13,6 +13,7 @@ class UObject;
 class UWorld;
 struct FGameplayEffectSpec;
 
+
 /**
  * This macro defines a set of helper functions for accessing and initializing attributes.
  *
@@ -25,13 +26,13 @@ struct FGameplayEffectSpec;
  *		void InitHealth(float NewVal);
  */
 #define ATTRIBUTE_ACCESSORS(ClassName, PropertyName) \
-GAMEPLAYATTRIBUTE_PROPERTY_GETTER(ClassName, PropertyName) \
-GAMEPLAYATTRIBUTE_VALUE_GETTER(PropertyName) \
-GAMEPLAYATTRIBUTE_VALUE_SETTER(PropertyName) \
-GAMEPLAYATTRIBUTE_VALUE_INITTER(PropertyName)
+	GAMEPLAYATTRIBUTE_PROPERTY_GETTER(ClassName, PropertyName) \
+	GAMEPLAYATTRIBUTE_VALUE_GETTER(PropertyName) \
+	GAMEPLAYATTRIBUTE_VALUE_SETTER(PropertyName) \
+	GAMEPLAYATTRIBUTE_VALUE_INITTER(PropertyName)
 
 /** 
- * Delegate used to broadcast attribute events. Some of these parameters may be null on clients: 
+ * Delegate used to broadcast attribute events, some of these parameters may be null on clients: 
  * @param EffectInstigator	The original instigating actor for this event
  * @param EffectCauser		The physical actor that caused the change
  * @param EffectSpec		The full effect spec for this change
@@ -46,17 +47,16 @@ DECLARE_MULTICAST_DELEGATE_SixParams(FBaseAttributeEvent, AActor* /*EffectInstig
  *
  *	Base attribute set class for the project.
  */
-UCLASS()
+UCLASS(Blueprintable)
 class MXFGAME_API UBaseAttributeSet : public UAttributeSet
 {
 	GENERATED_BODY()
-	
+
 public:
 
 	UBaseAttributeSet();
 
-	virtual UWorld* GetWorld() const override;
+	UWorld* GetWorld() const override;
 
 	UBaseAbilitySystemComponent* GetBaseAbilitySystemComponent() const;
-	UAbilitySystemComponent* GetAbilitySystemComponent() const;
 };

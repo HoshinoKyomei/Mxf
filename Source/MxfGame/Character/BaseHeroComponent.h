@@ -1,16 +1,15 @@
-﻿// Copyright Epic Games, Inc. All Rights Reserved.
+// Copyright Epic Games, Inc. All Rights Reserved.
 
 #pragma once
 
 #include "CoreMinimal.h"
 #include "Components/GameFrameworkInitStateInterface.h"
 #include "Components/PawnComponent.h"
-#include "GameFeatures/GameFeatureAction_AddInputContextMapping.h"
-#include "Input/BaseInputConfig.h"
+// #include "GameFeatures/GameFeatureAction_AddInputContextMapping.h"
+#include "GameplayAbilitySpecHandle.h"
 
 #include "BaseHeroComponent.generated.h"
 
-class UGameFeatureAction_AddInputContextMapping;
 struct FInputMappingContextAndPriority;
 
 namespace EEndPlayReason { enum Type : int; }
@@ -27,7 +26,7 @@ struct FGameplayTag;
 struct FInputActionValue;
 
 /**
- * Component that sets up input for player-controlled pawns (or bots that simulate players).
+ * Component that sets up input and camera handling for player-controlled pawns (or bots that simulate players).
  * This depends on a PawnExtensionComponent to coordinate initialization.
  */
 UCLASS(Blueprintable, Meta=(BlueprintSpawnableComponent))
@@ -36,22 +35,19 @@ class MXFGAME_API UBaseHeroComponent : public UPawnComponent, public IGameFramew
 	GENERATED_BODY()
 
 public:
-	UBaseHeroComponent(const FObjectInitializer& ObjectInitializer);
-	
-	/** Returns the hero component if one exists on the specified actor. */
-	UFUNCTION(BlueprintPure, Category = "Hero")
-	static UBaseHeroComponent* FindHeroComponent(const AActor* Actor) { return (Actor ? Actor->FindComponentByClass<UBaseHeroComponent>() : nullptr); }
-	
-	/** Overrides the camera from an active gameplay ability */
 
-	/** Clears the camera override if it is set */
-	
+	UBaseHeroComponent(const FObjectInitializer& ObjectInitializer);
+
+	/** Returns the hero component if one exists on the specified actor. */
+	UFUNCTION(BlueprintPure, Category = "Base|Hero")
+	static UBaseHeroComponent* FindHeroComponent(const AActor* Actor) { return (Actor ? Actor->FindComponentByClass<UBaseHeroComponent>() : nullptr); }
+
 	/** Adds mode-specific input config */
 	void AddAdditionalInputConfig(const UBaseInputConfig* InputConfig);
-	
+
 	/** Removes a mode-specific input config if it has been added */
 	void RemoveAdditionalInputConfig(const UBaseInputConfig* InputConfig);
-	
+
 	/** True if this is controlled by a real player and has progressed far enough in initialization where additional input bindings can be added */
 	bool IsReadyToBindInputs() const;
 	
@@ -60,7 +56,7 @@ public:
 
 	/** The name of this component-implemented feature */
 	static const FName NAME_ActorFeatureName;
-	
+
 	//~ Begin IGameFrameworkInitStateInterface interface
 	virtual FName GetFeatureName() const override { return NAME_ActorFeatureName; }
 	virtual bool CanChangeInitState(UGameFrameworkComponentManager* Manager, FGameplayTag CurrentState, FGameplayTag DesiredState) const override;
@@ -68,45 +64,36 @@ public:
 	virtual void OnActorInitStateChanged(const FActorInitStateChangedParams& Params) override;
 	virtual void CheckDefaultInitialization() override;
 	//~ End IGameFrameworkInitStateInterface interface
-	
+
 protected:
-	
+
 	virtual void OnRegister() override;
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
 	virtual void InitializePlayerInput(UInputComponent* PlayerInputComponent);
 
-	//~ AbilityInput
 	void Input_AbilityInputTagPressed(FGameplayTag InputTag);
 	void Input_AbilityInputTagReleased(FGameplayTag InputTag);
-	//~ End AbilityInput
-	
-	//~ MoveInput
-	UFUNCTION(BlueprintNativeEvent, Category = "Input")
-	void Input_Move(const FInputActionValue& InputActionValue);
-	
-	UFUNCTION(BlueprintNativeEvent, Category = "Input")
-    void Input_LookMouse(const FInputActionValue& InputActionValue);
-	
-	UFUNCTION(BlueprintNativeEvent, Category = "Input")
-	void Input_LookStick(const FInputActionValue& InputActionValue);
-	
-	UFUNCTION(BlueprintNativeEvent, Category = "Input")
-    void Input_Crouch(const FInputActionValue& InputActionValue);
 
 	UFUNCTION(BlueprintNativeEvent, Category = "Input")
-    void Input_AutoRun(const FInputActionValue& InputActionValue);
-	//~ End MoveInput
+	void Input_Move(const FInputActionValue& InputActionValue);
+	UFUNCTION(BlueprintNativeEvent, Category = "Input")
+	void Input_LookMouse(const FInputActionValue& InputActionValue);
+	UFUNCTION(BlueprintNativeEvent, Category = "Input")
+	void Input_LookStick(const FInputActionValue& InputActionValue);
+	UFUNCTION(BlueprintNativeEvent, Category = "Input")
+	void Input_Crouch(const FInputActionValue& InputActionValue);
+	UFUNCTION(BlueprintNativeEvent, Category = "Input")
+	void Input_AutoRun(const FInputActionValue& InputActionValue);
 
 protected:
 	
-	// UPROPERTY(EditAnywhere)
-	// TArray<FInputMappingContextAndPriority> DefaultInputMappings;
-	
-	/** Camera mode set by an ability. */
+	UPROPERTY(EditAnywhere)
+	TArray<FInputMappingContextAndPriority> DefaultInputMappings;
 
 	/** Spec handle for the last ability to set a camera mode. */
+	FGameplayAbilitySpecHandle AbilityCameraModeOwningSpecHandle;
 
 	/** True, when player input bindings have been applied, will never be true for non - players */
 	bool bReadyToBindInputs;

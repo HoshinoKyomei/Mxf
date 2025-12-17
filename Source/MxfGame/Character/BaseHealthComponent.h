@@ -7,6 +7,8 @@
 
 #include "BaseHealthComponent.generated.h"
 
+class UBaseHealthComponent;
+
 class UBaseAbilitySystemComponent;
 class UBaseHealthSet;
 class UObject;
@@ -29,47 +31,49 @@ enum class EBaseDeathState : uint8
 	DeathFinished
 };
 
+
 /**
  * UBaseHealthComponent
  *
  *	An actor component used to handle anything related to health.
  */
-UCLASS()
+UCLASS(Blueprintable, Meta=(BlueprintSpawnableComponent))
 class MXFGAME_API UBaseHealthComponent : public UGameFrameworkComponent
 {
 	GENERATED_BODY()
-	
+
 public:
+
 	UBaseHealthComponent(const FObjectInitializer& ObjectInitializer);
-	
+
 	// Returns the health component if one exists on the specified actor.
-	UFUNCTION(BlueprintPure, Category = "Health")
+	UFUNCTION(BlueprintPure, Category = "Base|Health")
 	static UBaseHealthComponent* FindHealthComponent(const AActor* Actor) { return (Actor ? Actor->FindComponentByClass<UBaseHealthComponent>() : nullptr); }
 
 	// Initialize the component using an ability system component.
-	UFUNCTION(BlueprintCallable, Category = "Health")
+	UFUNCTION(BlueprintCallable, Category = "Base|Health")
 	void InitializeWithAbilitySystem(UBaseAbilitySystemComponent* InASC);
 
 	// Uninitialize the component, clearing any references to the ability system.
-	UFUNCTION(BlueprintCallable, Category = "Health")
+	UFUNCTION(BlueprintCallable, Category = "Base|Health")
 	void UninitializeFromAbilitySystem();
 
 	// Returns the current health value.
-	UFUNCTION(BlueprintCallable, Category = "Health")
+	UFUNCTION(BlueprintCallable, Category = "Base|Health")
 	float GetHealth() const;
 
 	// Returns the current maximum health value.
-	UFUNCTION(BlueprintCallable, Category = "Health")
+	UFUNCTION(BlueprintCallable, Category = "Base|Health")
 	float GetMaxHealth() const;
 
 	// Returns the current health in the range [0.0, 1.0].
-	UFUNCTION(BlueprintCallable, Category = "Health")
+	UFUNCTION(BlueprintCallable, Category = "Base|Health")
 	float GetHealthNormalized() const;
 
-	UFUNCTION(BlueprintCallable, Category = "Health")
+	UFUNCTION(BlueprintCallable, Category = "Base|Health")
 	EBaseDeathState GetDeathState() const { return DeathState; }
 
-	UFUNCTION(BlueprintCallable, BlueprintPure = false, Category = "Health", Meta = (ExpandBoolAsExecs = "ReturnValue"))
+	UFUNCTION(BlueprintCallable, BlueprintPure = false, Category = "Base|Health", Meta = (ExpandBoolAsExecs = "ReturnValue"))
 	bool IsDeadOrDying() const { return (DeathState > EBaseDeathState::NotDead); }
 
 	// Begins the death sequence for the owner.
@@ -80,14 +84,14 @@ public:
 
 	// Applies enough damage to kill the owner.
 	virtual void DamageSelfDestruct(bool bFellOutOfWorld = false);
-	
+
 public:
 
-	// Delegate fired when the health value has changed. This is called on the client, but the instigator may not be valid
+	// Delegate fired when the health value has changed. This is called on the client but the instigator may not be valid
 	UPROPERTY(BlueprintAssignable)
 	FBaseHealth_AttributeChanged OnHealthChanged;
 
-	// Delegate fired when the max health value has changed. This is called on the client, but the instigator may not be valid
+	// Delegate fired when the max health value has changed. This is called on the client but the instigator may not be valid
 	UPROPERTY(BlueprintAssignable)
 	FBaseHealth_AttributeChanged OnMaxHealthChanged;
 
@@ -98,7 +102,7 @@ public:
 	// Delegate fired when the death sequence has finished.
 	UPROPERTY(BlueprintAssignable)
 	FBaseHealth_DeathEvent OnDeathFinished;
-	
+
 protected:
 
 	virtual void OnUnregister() override;

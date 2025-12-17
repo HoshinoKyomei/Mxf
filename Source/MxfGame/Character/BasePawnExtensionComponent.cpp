@@ -1,4 +1,4 @@
-﻿// Copyright Epic Games, Inc. All Rights Reserved.
+// Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "BasePawnExtensionComponent.h"
 
@@ -11,6 +11,7 @@
 #include "BaseLogChannels.h"
 #include "BasePawnData.h"
 #include "Net/UnrealNetwork.h"
+#include "Player/BasePlayerState.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(BasePawnExtensionComponent)
 
@@ -40,6 +41,14 @@ void UBasePawnExtensionComponent::GetLifetimeReplicatedProps(TArray<FLifetimePro
 
 void UBasePawnExtensionComponent::OnRegister()
 {
+	if (UGameFrameworkComponentManager* ComponentManager = UGameInstance::GetSubsystem<UGameFrameworkComponentManager>(GetGameInstance<UGameInstance>()))
+	{
+		ComponentManager->RegisterInitState(BaseGameplayTags::InitState_Spawned, false, FGameplayTag());
+		ComponentManager->RegisterInitState(BaseGameplayTags::InitState_DataAvailable, false, BaseGameplayTags::InitState_Spawned);
+		ComponentManager->RegisterInitState(BaseGameplayTags::InitState_DataInitialized, false, BaseGameplayTags::InitState_DataAvailable);
+		ComponentManager->RegisterInitState(BaseGameplayTags::InitState_GameplayReady, false, BaseGameplayTags::InitState_DataInitialized);
+	}
+	
 	Super::OnRegister();
 
 	const APawn* Pawn = GetPawn<APawn>();
@@ -60,7 +69,7 @@ void UBasePawnExtensionComponent::BeginPlay()
 	// Listen for changes to all features
 	BindOnActorInitStateChanged(NAME_None, FGameplayTag(), false);
 	
-	// Notifies state manager that we have spawned, then try the rest of default initialization
+	// Notifies state manager that we have spawned, then try rest of default initialization
 	ensure(TryToChangeInitState(BaseGameplayTags::InitState_Spawned));
 	CheckDefaultInitialization();
 }
@@ -129,7 +138,7 @@ void UBasePawnExtensionComponent::InitializeAbilitySystem(UBaseAbilitySystemComp
 		UE_LOG(LogBase, Log, TEXT("Existing avatar (authority=%d)"), ExistingAvatar->HasAuthority() ? 1 : 0);
 
 		// There is already a pawn acting as the ASC's avatar, so we need to kick it out
-		// This can happen to clients if they're lagged: their new pawn is spawned + possessed before the dead one is removed
+		// This can happen on clients if they're lagged: their new pawn is spawned + possessed before the dead one is removed
 		ensure(!ExistingAvatar->HasAuthority());
 
 		if (UBasePawnExtensionComponent* OtherExtensionComponent = FindPawnExtensionComponent(ExistingAvatar))
@@ -143,7 +152,7 @@ void UBasePawnExtensionComponent::InitializeAbilitySystem(UBaseAbilitySystemComp
 
 	if (ensure(PawnData))
 	{
-		// InASC->SetTagRelationshipMapping(PawnData->TagRelationshipMapping);
+		InASC->SetTagRelationshipMapping(PawnData->TagRelationshipMapping);
 	}
 
 	OnAbilitySystemInitialized.Broadcast();
@@ -163,7 +172,7 @@ void UBasePawnExtensionComponent::UninitializeAbilitySystem()
 		AbilityTypesToIgnore.AddTag(BaseGameplayTags::Ability_Behavior_SurvivesDeath);
 
 		AbilitySystemComponent->CancelAbilities(nullptr, &AbilityTypesToIgnore);
-		// AbilitySystemComponent->ClearAbilityInput();
+		AbilitySystemComponent->ClearAbilityInput();
 		AbilitySystemComponent->RemoveAllGameplayCues();
 
 		if (AbilitySystemComponent->GetOwnerActor() != nullptr)
@@ -271,7 +280,21 @@ bool UBasePawnExtensionComponent::CanChangeInitState(UGameFrameworkComponentMana
 
 void UBasePawnExtensionComponent::HandleChangeInitState(UGameFrameworkComponentManager* Manager, FGameplayTag CurrentState, FGameplayTag DesiredState)
 {
-	if (DesiredState == BaseGameplayTags::InitState_DataInitialized)
+	if (DesiredState == BaseGameplayTags::InitState_Spawned)
+	{
+		// Try to get pawn data from the controller's PlayerState
+		if (AController* Controller = GetController<AController>())
+		{
+			if (const ABasePlayerState* BasePS = Controller->GetPlayerState<ABasePlayerState>())
+			{
+				if (const UBasePawnData* PlayerStatePawnData = BasePS->GetPawnData<UBasePawnData>())
+				{
+					SetPawnData(PlayerStatePawnData);
+				}
+			}
+		}
+	}
+	else if (DesiredState == BaseGameplayTags::InitState_DataInitialized)
 	{
 		// This is currently all handled by other components listening to this state change
 	}

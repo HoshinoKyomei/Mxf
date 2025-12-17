@@ -9,18 +9,10 @@
 
 #include "BasePlayerState.generated.h"
 
-struct FBaseVerbMessage;
-
-class AController;
+class UBasePawnData;
 class ABasePlayerController;
-class APlayerState;
-class FName;
 class UAbilitySystemComponent;
 class UBaseAbilitySystemComponent;
-class UBasePawnData;
-class UObject;
-struct FFrame;
-struct FGameplayTag;
 
 /**
  * ABasePlayerState
@@ -36,10 +28,10 @@ public:
 	
 	ABasePlayerState(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 	
-	UFUNCTION(BlueprintCallable, Category = "PlayerState")
+	UFUNCTION(BlueprintCallable, Category = "Base|PlayerState")
 	ABasePlayerController* GetBasePlayerController() const;
-	
-	UFUNCTION(BlueprintCallable, Category= "PlayerState")
+
+	UFUNCTION(BlueprintCallable, Category = "Base|PlayerState")
 	UBaseAbilitySystemComponent* GetBaseAbilitySystemComponent() const { return AbilitySystemComponent; }
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	
@@ -49,11 +41,16 @@ public:
 	void SetPawnData(const UBasePawnData* InPawnData);
 
 	//~AActor interface
+	virtual void PreInitializeComponents() override;
 	virtual void PostInitializeComponents() override;
 	//~End of AActor interface
-	
+
 	//~APlayerState interface
+	virtual void Reset() override;
 	virtual void ClientInitialize(AController* C) override;
+	virtual void CopyProperties(APlayerState* PlayerState) override;
+	virtual void OnDeactivated() override;
+	virtual void OnReactivated() override;
 	//~End of APlayerState interface
 	
 	static const FName NAME_BaseAbilityReady;
@@ -74,22 +71,17 @@ public:
 	UFUNCTION(BlueprintCallable, Category=Teams)
 	bool HasStatTag(FGameplayTag Tag) const;
 	
-	// Send a message to just this player
-	// (use only for client notifications like accolades, quest toasts, etc... that can handle being occasionally lost)
-	UFUNCTION(Client, Unreliable, BlueprintCallable, Category = "Base|PlayerState")
-	void ClientBroadcastMessage(const FBaseVerbMessage Message);
-	
 protected:
 	UFUNCTION()
 	void OnRep_PawnData();
-	
-	UPROPERTY(ReplicatedUsing = OnRep_PawnData)
+
+	UPROPERTY(EditAnywhere, Category="Base|PlayerState", ReplicatedUsing = OnRep_PawnData)
 	TObjectPtr<const UBasePawnData> PawnData;
 	
 private:
 	
 	// The ability system component sub-object used by player characters.
-	UPROPERTY(VisibleAnywhere, Category = "PlayerState")
+	UPROPERTY(VisibleAnywhere, Category = "Base|PlayerState")
 	TObjectPtr<UBaseAbilitySystemComponent> AbilitySystemComponent;
 	
 	// Health attribute set used by this actor.

@@ -1,4 +1,4 @@
-﻿// Copyright Epic Games, Inc. All Rights Reserved.
+// Copyright Epic Games, Inc. All Rights Reserved.
 
 #pragma once
 
@@ -7,6 +7,8 @@
 #include "Components/PawnComponent.h"
 
 #include "BasePawnExtensionComponent.generated.h"
+
+namespace EEndPlayReason { enum Type : int; }
 
 class UGameFrameworkComponentManager;
 class UBaseAbilitySystemComponent;
@@ -20,18 +22,18 @@ struct FGameplayTag;
  * Component that adds functionality to all Pawn classes so it can be used for characters/vehicles/etc.
  * This coordinates the initialization of other components.
  */
-UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
+UCLASS()
 class MXFGAME_API UBasePawnExtensionComponent : public UPawnComponent, public IGameFrameworkInitStateInterface
 {
 	GENERATED_BODY()
 
 public:
-	
+
 	UBasePawnExtensionComponent(const FObjectInitializer& ObjectInitializer);
-	
+
 	/** The name of this overall feature, this one depends on the other named component features */
 	static const FName NAME_ActorFeatureName;
-	
+
 	//~ Begin IGameFrameworkInitStateInterface interface
 	virtual FName GetFeatureName() const override { return NAME_ActorFeatureName; }
 	virtual bool CanChangeInitState(UGameFrameworkComponentManager* Manager, FGameplayTag CurrentState, FGameplayTag DesiredState) const override;
@@ -41,7 +43,7 @@ public:
 	//~ End IGameFrameworkInitStateInterface interface
 
 	/** Returns the pawn extension component if one exists on the specified actor. */
-	UFUNCTION(BlueprintPure, Category = "Pawn")
+	UFUNCTION(BlueprintPure, Category = "Base|Pawn")
 	static UBasePawnExtensionComponent* FindPawnExtensionComponent(const AActor* Actor) { return (Actor ? Actor->FindComponentByClass<UBasePawnExtensionComponent>() : nullptr); }
 
 	/** Gets the pawn data, which is used to specify pawn properties in data */
@@ -52,7 +54,7 @@ public:
 	void SetPawnData(const UBasePawnData* InPawnData);
 
 	/** Gets the current ability system component, which may be owned by a different actor */
-	UFUNCTION(BlueprintPure, Category = "Pawn")
+	UFUNCTION(BlueprintPure, Category = "Base|Pawn")
 	UBaseAbilitySystemComponent* GetBaseAbilitySystemComponent() const { return AbilitySystemComponent; }
 
 	/** Should be called by the owning pawn to become the avatar of the ability system. */
@@ -92,7 +94,7 @@ protected:
 	FSimpleMulticastDelegate OnAbilitySystemUninitialized;
 
 	/** Pawn data used to create the pawn. Specified from a spawn function or on a placed instance. */
-	UPROPERTY(EditInstanceOnly, ReplicatedUsing = OnRep_PawnData, Category = "Pawn")
+	UPROPERTY(BlueprintReadOnly, EditInstanceOnly, ReplicatedUsing = OnRep_PawnData, Category = "Base|Pawn")
 	TObjectPtr<const UBasePawnData> PawnData;
 
 	/** Pointer to the ability system component that is cached for convenience. */

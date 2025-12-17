@@ -1,42 +1,60 @@
-﻿// Copyright Soatori Games, Inc. All Rights Reserved.
+// Copyright Epic Games, Inc. All Rights Reserved.
 
 #pragma once
 
-#include "CoreMinimal.h"
 #include "EnhancedInputComponent.h"
 #include "BaseInputConfig.h"
 
 #include "BaseInputComponent.generated.h"
 
+class UInputMappingContext;
 class UEnhancedInputLocalPlayerSubsystem;
 class UInputAction;
 class UObject;
+
+USTRUCT()
+struct FInputMappingContextAndPriority
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere, Category="Input", meta=(AssetBundles="Client,Server"))
+	TSoftObjectPtr<UInputMappingContext> InputMapping;
+
+	// Higher priority input mappings will be prioritized over mappings with a lower priority.
+	UPROPERTY(EditAnywhere, Category="Input")
+	int32 Priority = 0;
+	
+	/** If true, then this mapping context will be registered with the settings when this game feature action is registered. */
+	UPROPERTY(EditAnywhere, Category="Input")
+	bool bRegisterWithSettings = true;
+};
 
 /**
  * UBaseInputComponent
  *
  *	Component used to manage input mappings and bindings using an input config data asset.
  */
-UCLASS(Blueprintable, Config = Input)
-class MXFGAME_API UBaseInputComponent : public UEnhancedInputComponent
+UCLASS(Config = Input)
+class UBaseInputComponent : public UEnhancedInputComponent
 {
 	GENERATED_BODY()
 
 public:
 
 	UBaseInputComponent(const FObjectInitializer& ObjectInitializer);
-	
+
 	void AddInputMappings(const UBaseInputConfig* InputConfig, UEnhancedInputLocalPlayerSubsystem* InputSubsystem) const;
 	void RemoveInputMappings(const UBaseInputConfig* InputConfig, UEnhancedInputLocalPlayerSubsystem* InputSubsystem) const;
-	
+
 	template<class UserClass, typename FuncType>
 	void BindNativeAction(const UBaseInputConfig* InputConfig, const FGameplayTag& InputTag, ETriggerEvent TriggerEvent, UserClass* Object, FuncType Func, bool bLogIfNotFound);
 
 	template<class UserClass, typename PressedFuncType, typename ReleasedFuncType>
 	void BindAbilityActions(const UBaseInputConfig* InputConfig, UserClass* Object, PressedFuncType PressedFunc, ReleasedFuncType ReleasedFunc, TArray<uint32>& BindHandles);
-	
+
 	void RemoveBinds(TArray<uint32>& BindHandles);
 };
+
 
 template<class UserClass, typename FuncType>
 void UBaseInputComponent::BindNativeAction(const UBaseInputConfig* InputConfig, const FGameplayTag& InputTag, ETriggerEvent TriggerEvent, UserClass* Object, FuncType Func, bool bLogIfNotFound)

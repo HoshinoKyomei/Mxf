@@ -7,13 +7,13 @@ public class MxfGame : ModuleRules
 	public MxfGame(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
-
+		
 		PublicIncludePaths.AddRange(
 			new string[] {
 				"MxfGame"
 			}
 		);
-
+	
 		PublicDependencyModuleNames.AddRange(
 			new string[] {
 				"Core",
@@ -21,26 +21,28 @@ public class MxfGame : ModuleRules
 				"Engine",
 				"InputCore",
 				"GameplayTags",
-				"GameplayTasks",
-				"GameplayAbilities",
-				"ModularGameplay",
-				"ModularGameplayActors",
-				"GameFeatures"
-				}
-			);
+                "GameplayTasks",
+                "GameplayAbilities",
+                "ModularGameplay",
+                "ModularGameplayActors",
+                "GameFeatures",
+                "ALSV4_CPP"
+			}
+		);
 
 		PrivateDependencyModuleNames.AddRange(
 			new string[] {
 				"EnhancedInput",
-				"NetCore",
-				"GameplayMessageRuntime",
-				"ALSV4_CPP"
-				}
-			);
+                "NetCore",
+                "CommonUI",
+                "CommonGame",
+                "CommonUser",
+			}
+		);
 
 		// Uncomment if you are using Slate UI
 		// PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });
-
+		
 		// Uncomment if you are using online features
 		// PrivateDependencyModuleNames.Add("OnlineSubsystem");
 

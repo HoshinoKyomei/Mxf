@@ -1,66 +1,39 @@
-﻿// Copyright Epic Games, Inc. All Rights Reserved.
+﻿// Copyright Soatori Games, Inc. All Rights Reserved.
 
 
 #include "BaseGameplayAbility.h"
-
 #include "AbilitySystem/BaseAbilitySystemComponent.h"
-#include "Character/BaseCharacter.h"
-#include "Character/BaseHeroComponent.h"
-#include "Player/BasePlayerController.h"
+
+#include UE_INLINE_GENERATED_CPP_BY_NAME(BaseGameplayAbility)
 
 UBaseGameplayAbility::UBaseGameplayAbility(const FObjectInitializer& ObjectInitializer)
+	: Super(ObjectInitializer)
 {
 	ActivationPolicy = EBaseAbilityActivationPolicy::OnInputTriggered;
-	ActivationGroup = EBaseAbilityActivationGroup::Independent;
 }
 
-UBaseAbilitySystemComponent* UBaseGameplayAbility::GetBaseAbilitySystemComponentFromActorInfo() const
+void UBaseGameplayAbility::TryActivateAbilityOnSpawn(const FGameplayAbilityActorInfo* ActorInfo,
+	const FGameplayAbilitySpec& Spec) const
 {
-	return (CurrentActorInfo ? Cast<UBaseAbilitySystemComponent>(CurrentActorInfo->AbilitySystemComponent.Get()) : nullptr);
-}
-
-ABasePlayerController* UBaseGameplayAbility::GetBasePlayerControllerFromActorInfo() const
-{
-	return (CurrentActorInfo ? Cast<ABasePlayerController>(CurrentActorInfo->PlayerController.Get()) : nullptr);
-}
-
-
-AController* UBaseGameplayAbility::GetControllerFromActorInfo() const
-{
-	if (CurrentActorInfo)
+	// Try to activate if the activation policy is on spawn.
+	if (ActorInfo && !Spec.IsActive() && (ActivationPolicy == EBaseAbilityActivationPolicy::OnSpawn))
 	{
-		if (AController* PC = CurrentActorInfo->PlayerController.Get())
+		UAbilitySystemComponent* ASC = ActorInfo->AbilitySystemComponent.Get();
+		const AActor* AvatarActor = ActorInfo->AvatarActor.Get();
+
+		// If the avatar actor is torn off or about to die, don't try to activate until we get the new one.
+		if (ASC && AvatarActor && !AvatarActor->GetTearOff() && (AvatarActor->GetLifeSpan() <= 0.0f))
 		{
-			return PC;
-		}
+			const bool bIsLocalExecution = (NetExecutionPolicy == EGameplayAbilityNetExecutionPolicy::LocalPredicted) || (NetExecutionPolicy == EGameplayAbilityNetExecutionPolicy::LocalOnly);
+			const bool bIsServerExecution = (NetExecutionPolicy == EGameplayAbilityNetExecutionPolicy::ServerOnly) || (NetExecutionPolicy == EGameplayAbilityNetExecutionPolicy::ServerInitiated);
 
-		// Look for a player controller or pawn in the owner chain.
-		AActor* TestActor = CurrentActorInfo->OwnerActor.Get();
-		while (TestActor)
-		{
-			if (AController* C = Cast<AController>(TestActor))
+			const bool bClientShouldActivate = ActorInfo->IsLocallyControlled() && bIsLocalExecution;
+			const bool bServerShouldActivate = ActorInfo->IsNetAuthority() && bIsServerExecution;
+
+			if (bClientShouldActivate || bServerShouldActivate)
 			{
-				return C;
+				ASC->TryActivateAbility(Spec.Handle);
 			}
-
-			if (APawn* Pawn = Cast<APawn>(TestActor))
-			{
-				return Pawn->GetController();
-			}
-
-			TestActor = TestActor->GetOwner();
 		}
 	}
-
-	return nullptr;
-}
-
-ABaseCharacter* UBaseGameplayAbility::GetBaseCharacterFromActorInfo() const
-{
-	return (CurrentActorInfo ? Cast<ABaseCharacter>(CurrentActorInfo->AvatarActor.Get()) : nullptr);
-}
-
-UBaseHeroComponent* UBaseGameplayAbility::GetHeroComponentFromActorInfo() const
-{
-	return (CurrentActorInfo ? UBaseHeroComponent::FindHeroComponent(CurrentActorInfo->AvatarActor.Get()) : nullptr);
 }

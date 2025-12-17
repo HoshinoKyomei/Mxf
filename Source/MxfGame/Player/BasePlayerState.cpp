@@ -1,4 +1,4 @@
-﻿// Copyright Soatori Games, Inc. All Rights Reserved.
+﻿// Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "BasePlayerState.h"
 
@@ -9,35 +9,46 @@
 #include "Character/BasePawnData.h"
 #include "Character/BasePawnExtensionComponent.h"
 #include "Components/GameFrameworkComponentManager.h"
-#include "GameFramework/GameplayMessageSubsystem.h"
+#include "Engine/World.h"
+// #include "GameFramework/GameplayMessageSubsystem.h"
+// #include "GameModes/BaseExperienceManagerComponent.h"
 //@TODO: Would like to isolate this a bit better to get the pawn data in here without this having to know about other stuff
+#include "GameModes/BaseGameMode.h"
 #include "BaseLogChannels.h"
 #include "BasePlayerController.h"
-#include "Messages/BaseVerbMessage.h"
+// #include "Messages/BaseVerbMessage.h"
 #include "Net/UnrealNetwork.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(BasePlayerState)
+
+class AController;
+class APlayerState;
 
 const FName ABasePlayerState::NAME_BaseAbilityReady("BaseAbilitiesReady");
 
 ABasePlayerState::ABasePlayerState(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
-	AbilitySystemComponent = CreateDefaultSubobject<UBaseAbilitySystemComponent>(TEXT("AbilitySystemComponent"));
+	AbilitySystemComponent = ObjectInitializer.CreateDefaultSubobject<UBaseAbilitySystemComponent>(this, TEXT("AbilitySystemComponent"));
 	AbilitySystemComponent->SetIsReplicated(true);
 	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Mixed);
 
 	// These attribute sets will be detected by AbilitySystemComponent::InitializeComponent. Keeping a reference so that the sets don't get garbage collected before that.
 	HealthSet = CreateDefaultSubobject<UBaseHealthSet>(TEXT("HealthSet"));
 	CombatSet = CreateDefaultSubobject<UBaseCombatSet>(TEXT("CombatSet"));
-	
+
 	// AbilitySystemComponent needs to be updated at a high frequency.
 	SetNetUpdateFrequency(100.0f);
 }
 
-ABasePlayerController* ABasePlayerState::GetBasePlayerController() const
+void ABasePlayerState::PreInitializeComponents()
 {
-	return  Cast<ABasePlayerController>(GetPlayerController());
+	Super::PreInitializeComponents();
+}
+
+void ABasePlayerState::Reset()
+{
+	Super::Reset();
 }
 
 void ABasePlayerState::ClientInitialize(AController* C)
@@ -50,16 +61,38 @@ void ABasePlayerState::ClientInitialize(AController* C)
 	}
 }
 
+void ABasePlayerState::CopyProperties(APlayerState* PlayerState)
+{
+	Super::CopyProperties(PlayerState);
+
+	//@TODO: Copy stats
+}
+
+void ABasePlayerState::OnDeactivated()
+{
+	Super::OnDeactivated();
+}
+
+void ABasePlayerState::OnReactivated()
+{
+	Super::OnReactivated();
+}
+
 void ABasePlayerState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-	
+
 	FDoRepLifetimeParams SharedParams;
 	SharedParams.bIsPushBased = true;
 
 	DOREPLIFETIME_WITH_PARAMS_FAST(ThisClass, PawnData, SharedParams);
-	
+
 	DOREPLIFETIME(ThisClass, StatTags);	
+}
+
+ABasePlayerController* ABasePlayerState::GetBasePlayerController() const
+{
+	return Cast<ABasePlayerController>(GetOwner());
 }
 
 UAbilitySystemComponent* ABasePlayerState::GetAbilitySystemComponent() const
@@ -70,7 +103,7 @@ UAbilitySystemComponent* ABasePlayerState::GetAbilitySystemComponent() const
 void ABasePlayerState::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
-	
+
 	check(AbilitySystemComponent);
 	AbilitySystemComponent->InitAbilityActorInfo(this, GetPawn());
 }
@@ -128,13 +161,4 @@ int32 ABasePlayerState::GetStatTagStackCount(FGameplayTag Tag) const
 bool ABasePlayerState::HasStatTag(FGameplayTag Tag) const
 {
 	return StatTags.ContainsTag(Tag);
-}
-
-void ABasePlayerState::ClientBroadcastMessage_Implementation(const FBaseVerbMessage Message)
-{
-	// This check is needed to prevent running the action when in standalone mode
-	if (GetNetMode() == NM_Client)
-	{
-		UGameplayMessageSubsystem::Get(this).BroadcastMessage(Message.Verb, Message);
-	}
 }

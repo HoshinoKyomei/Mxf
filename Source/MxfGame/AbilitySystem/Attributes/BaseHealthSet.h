@@ -1,4 +1,4 @@
-﻿// Copyright Soatori Games, Inc. All Rights Reserved.
+// Copyright Epic Games, Inc. All Rights Reserved.
 
 #pragma once
 
@@ -18,17 +18,20 @@ MXFGAME_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Gameplay_DamageSelfDestruct);
 MXFGAME_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Gameplay_FellOutOfWorld);
 MXFGAME_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Base_Damage_Message);
 
+struct FGameplayEffectModCallbackData;
+
+
 /**
  * UBaseHealthSet
  *
  *	Class that defines attributes that are necessary for taking damage.
  *	Attribute examples include: health, shields, and resistance.
  */
-UCLASS(BlueprintType)
-class MXFGAME_API UBaseHealthSet : public UBaseAttributeSet
+UCLASS(MinimalAPI, BlueprintType)
+class UBaseHealthSet : public UBaseAttributeSet
 {
 	GENERATED_BODY()
-	
+
 public:
 
 	UBaseHealthSet();
@@ -67,11 +70,11 @@ protected:
 private:
 
 	// The current health attribute.  The health will be capped by the max health attribute.  Health is hidden from modifiers, so only executions can modify it.
-	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Health, Category = "Health", Meta = (HideFromModifiers, AllowPrivateAccess = true))
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Health, Category = "Base|Health", Meta = (HideFromModifiers, AllowPrivateAccess = true))
 	FGameplayAttributeData Health;
 
 	// The current max health attribute.  Max health is an attribute since gameplay effects can modify it.
-	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_MaxHealth, Category = "Health", Meta = (AllowPrivateAccess = true))
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_MaxHealth, Category = "Base|Health", Meta = (AllowPrivateAccess = true))
 	FGameplayAttributeData MaxHealth;
 
 	// Used to track when the health reaches 0.
@@ -86,10 +89,10 @@ private:
 	// -------------------------------------------------------------------
 
 	// Incoming healing. This is mapped directly to +Health
-	UPROPERTY(BlueprintReadOnly, Category="Health", Meta=(AllowPrivateAccess=true))
+	UPROPERTY(BlueprintReadOnly, Category="Base|Health", Meta=(AllowPrivateAccess=true))
 	FGameplayAttributeData Healing;
 
 	// Incoming damage. This is mapped directly to -Health
-	UPROPERTY(BlueprintReadOnly, Category="Health", Meta=(HideFromModifiers, AllowPrivateAccess=true))
+	UPROPERTY(BlueprintReadOnly, Category="Base|Health", Meta=(HideFromModifiers, AllowPrivateAccess=true))
 	FGameplayAttributeData Damage;
 };

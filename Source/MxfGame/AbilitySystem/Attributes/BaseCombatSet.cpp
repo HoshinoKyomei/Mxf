@@ -1,4 +1,4 @@
-﻿// Copyright Soatori Games, Inc. All Rights Reserved.
+// Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "BaseCombatSet.h"
 
@@ -6,6 +6,9 @@
 #include "Net/UnrealNetwork.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(BaseCombatSet)
+
+class FLifetimeProperty;
+
 
 UBaseCombatSet::UBaseCombatSet()
 	: BaseDamage(0.0f)
@@ -30,3 +33,4 @@ void UBaseCombatSet::OnRep_BaseHeal(const FGameplayAttributeData& OldValue)
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UBaseCombatSet, BaseHeal, OldValue);
 }
+

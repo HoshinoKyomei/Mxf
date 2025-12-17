@@ -1,14 +1,14 @@
-﻿// Copyright Epic Games, Inc. All Rights Reserved.
+// Copyright Epic Games, Inc. All Rights Reserved.
 
 #pragma once
 
-#include "CoreMinimal.h"
 #include "Engine/DataAsset.h"
+
 #include "BasePawnData.generated.h"
 
 class APawn;
 class UBaseAbilitySet;
-// class UBaseAbilityTagRelationshipMapping;
+class UBaseAbilityTagRelationshipMapping;
 class UBaseInputConfig;
 class UObject;
 
@@ -21,28 +21,27 @@ UCLASS(BlueprintType, Const, Meta = (DisplayName = "Base Pawn Data", ShortToolti
 class MXFGAME_API UBasePawnData : public UPrimaryDataAsset
 {
 	GENERATED_BODY()
-	
+
 public:
 
 	UBasePawnData(const FObjectInitializer& ObjectInitializer);
 
+public:
+
 	// Class to instantiate for this pawn (should usually derive from ABasePawn or ABaseCharacter).
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Pawn")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Base|Pawn")
 	TSubclassOf<APawn> PawnClass;
 
 	// Ability sets to grant to this pawn's ability system.
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Abilities")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Base|Abilities")
 	TArray<TObjectPtr<UBaseAbilitySet>> AbilitySets;
 
 	// What mapping of ability tags to use for actions taking by this pawn
-	// UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Abilities")
-	// TObjectPtr<UBaseAbilityTagRelationshipMapping> TagRelationshipMapping;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Base|Abilities")
+	TObjectPtr<UBaseAbilityTagRelationshipMapping> TagRelationshipMapping;
 
 	// Input configuration used by player-controlled pawns to create input mappings and bind input actions.
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Base|Input")
 	TObjectPtr<UBaseInputConfig> InputConfig;
-
-	// Default camera mode used by player controlled pawns.
-	// UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Camera")
-	// TSubclassOf<UBaseCameraMode> DefaultCameraMode;
+	
 };

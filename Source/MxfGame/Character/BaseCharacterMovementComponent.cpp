@@ -1,6 +1,6 @@
-// Copyright Soatori Games, Inc. All Rights Reserved.
+// Copyright Epic Games, Inc. All Rights Reserved.
 
-#include "Character/BaseCharacterMovementComponent.h"
+#include "BaseCharacterMovementComponent.h"
 
 #include "AbilitySystemComponent.h"
 #include "AbilitySystemGlobals.h"
@@ -18,9 +18,25 @@ namespace BaseCharacter
 	FAutoConsoleVariableRef CVar_GroundTraceDistance(TEXT("BaseCharacter.GroundTraceDistance"), GroundTraceDistance, TEXT("Distance to trace down when generating ground information."), ECVF_Cheat);
 };
 
+
 UBaseCharacterMovementComponent::UBaseCharacterMovementComponent(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
+}
+
+void UBaseCharacterMovementComponent::SimulateMovement(float DeltaTime)
+{
+	if (bHasReplicatedAcceleration)
+	{
+		// Preserve our replicated acceleration
+		const FVector OriginalAcceleration = Acceleration;
+		Super::SimulateMovement(DeltaTime);
+		Acceleration = OriginalAcceleration;
+	}
+	else
+	{
+		Super::SimulateMovement(DeltaTime);
+	}
 }
 
 bool UBaseCharacterMovementComponent::CanAttemptJump() const
@@ -28,6 +44,11 @@ bool UBaseCharacterMovementComponent::CanAttemptJump() const
 	// Same as UCharacterMovementComponent's implementation but without the crouch check
 	return IsJumpAllowed() &&
 		(IsMovingOnGround() || IsFalling()); // Falling included for double-jump and non-zero jump hold time, but validated by character.
+}
+
+void UBaseCharacterMovementComponent::InitializeComponent()
+{
+	Super::InitializeComponent();
 }
 
 const FBaseCharacterGroundInfo& UBaseCharacterMovementComponent::GetGroundInfo()
@@ -75,6 +96,12 @@ const FBaseCharacterGroundInfo& UBaseCharacterMovementComponent::GetGroundInfo()
 	CachedGroundInfo.LastUpdateFrame = GFrameCounter;
 
 	return CachedGroundInfo;
+}
+
+void UBaseCharacterMovementComponent::SetReplicatedAcceleration(const FVector& InAcceleration)
+{
+	bHasReplicatedAcceleration = true;
+	Acceleration = InAcceleration;
 }
 
 FRotator UBaseCharacterMovementComponent::GetDeltaRotation(float DeltaTime) const

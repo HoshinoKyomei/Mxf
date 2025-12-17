@@ -1,35 +1,33 @@
-﻿// Copyright Epic Games, Inc. All Rights Reserved.
+﻿// Copyright Soatori Games, Inc. All Rights Reserved.
 
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/PlayerController.h"
+#include "CommonPlayerController.h"
+
 #include "BasePlayerController.generated.h"
 
 class ABasePlayerState;
 class UBaseAbilitySystemComponent;
-class UObject;
-class UPlayer;
-struct FFrame;
 
 /**
- * ALyraPlayerController
+ * ABasePlayerController
  *
  *	The base player controller class used by this project.
  */
 UCLASS(Config = Game, Meta = (ShortTooltip = "The base player controller class used by this project."))
-class MXFGAME_API ABasePlayerController : public APlayerController
+class MXFGAME_API ABasePlayerController : public ACommonPlayerController
 {
 	GENERATED_BODY()
 	
 public:
 	
 	ABasePlayerController(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
-	
-	UFUNCTION(BlueprintCallable, Category = "PlayerController")
+
+	UFUNCTION(BlueprintCallable, Category = "Base|PlayerController")
 	ABasePlayerState* GetBasePlayerState() const;
-	
-	UFUNCTION(BlueprintCallable, Category = "PlayerController")
+
+	UFUNCTION(BlueprintCallable, Category = "Base|PlayerController")
 	UBaseAbilitySystemComponent* GetBaseAbilitySystemComponent() const;
 	
 	//~AActor interface
@@ -38,19 +36,29 @@ public:
 	
 	//~AController interface
 	virtual void OnPossess(APawn* InPawn) override;
+	virtual void OnUnPossess() override;
+	virtual void InitPlayerState() override;
+	virtual void CleanupPlayerState() override;
+	virtual void OnRep_PlayerState() override;
 	//~End of AController interface
 	
-	//~APlayerController interface
+	//~Begin of APlayerController interface
 	virtual void PlayerTick(float DeltaTime) override;
-	virtual void PreProcessInput(const float DeltaTime, const bool bGamePaused) override;
 	virtual void PostProcessInput(const float DeltaTime, const bool bGamePaused) override;
 	//~End of APlayerController interface
 	
-	UFUNCTION(BlueprintCallable, Category = "Character")
+	UFUNCTION(BlueprintCallable, Category = "Base|Character")
 	void SetIsAutoRunning(const bool bEnabled);
 
-	UFUNCTION(BlueprintCallable, Category = "Character")
+	UFUNCTION(BlueprintCallable, Category = "Base|Character")
 	bool GetIsAutoRunning() const;
+	
+protected:
+	// Called when the player state is set or cleared
+	virtual void OnPlayerStateChanged();
+	
+private:
+	void BroadcastOnPlayerStateChanged();
 	
 protected:
 	

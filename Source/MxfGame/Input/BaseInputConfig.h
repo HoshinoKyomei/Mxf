@@ -1,8 +1,7 @@
-﻿// Copyright Epic Games, Inc. All Rights Reserved.
+// Copyright Epic Games, Inc. All Rights Reserved.
 
 #pragma once
 
-#include "CoreMinimal.h"
 #include "Engine/DataAsset.h"
 #include "GameplayTagContainer.h"
 
@@ -15,7 +14,7 @@ struct FFrame;
 /**
  * FBaseInputAction
  *
- *	Struct used to map a input action to a gameplay input tag.
+ *	Struct used to map an input action to a gameplay input tag.
  */
 USTRUCT(BlueprintType)
 struct FBaseInputAction
@@ -37,18 +36,18 @@ public:
  *	Non-mutable data asset that contains input configuration properties.
  */
 UCLASS(BlueprintType, Const)
-class MXFGAME_API UBaseInputConfig : public UDataAsset
+class UBaseInputConfig : public UDataAsset
 {
 	GENERATED_BODY()
-	
+
 public:
-	
+
 	UBaseInputConfig(const FObjectInitializer& ObjectInitializer);
-	
-	UFUNCTION(BlueprintCallable, Category = "Pawn")
+
+	UFUNCTION(BlueprintCallable, Category = "Base|Pawn")
 	const UInputAction* FindNativeInputActionForTag(const FGameplayTag& InputTag, bool bLogNotFound = true) const;
 
-	UFUNCTION(BlueprintCallable, Category = "Pawn")
+	UFUNCTION(BlueprintCallable, Category = "Base|Pawn")
 	const UInputAction* FindAbilityInputActionForTag(const FGameplayTag& InputTag, bool bLogNotFound = true) const;
 
 public:
