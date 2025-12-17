@@ -41,6 +41,14 @@ void UBasePawnExtensionComponent::GetLifetimeReplicatedProps(TArray<FLifetimePro
 
 void UBasePawnExtensionComponent::OnRegister()
 {
+	if (UGameFrameworkComponentManager* ComponentManager = UGameInstance::GetSubsystem<UGameFrameworkComponentManager>(GetGameInstance<UGameInstance>()))
+	{
+		ComponentManager->RegisterInitState(BaseGameplayTags::InitState_Spawned, false, FGameplayTag());
+		ComponentManager->RegisterInitState(BaseGameplayTags::InitState_DataAvailable, false, BaseGameplayTags::InitState_Spawned);
+		ComponentManager->RegisterInitState(BaseGameplayTags::InitState_DataInitialized, false, BaseGameplayTags::InitState_DataAvailable);
+		ComponentManager->RegisterInitState(BaseGameplayTags::InitState_GameplayReady, false, BaseGameplayTags::InitState_DataInitialized);
+	}
+	
 	Super::OnRegister();
 
 	const APawn* Pawn = GetPawn<APawn>();

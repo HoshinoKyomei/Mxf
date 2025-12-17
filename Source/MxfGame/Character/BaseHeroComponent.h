@@ -76,10 +76,15 @@ protected:
 	void Input_AbilityInputTagPressed(FGameplayTag InputTag);
 	void Input_AbilityInputTagReleased(FGameplayTag InputTag);
 
+	UFUNCTION(BlueprintNativeEvent, Category = "Input")
 	void Input_Move(const FInputActionValue& InputActionValue);
+	UFUNCTION(BlueprintNativeEvent, Category = "Input")
 	void Input_LookMouse(const FInputActionValue& InputActionValue);
+	UFUNCTION(BlueprintNativeEvent, Category = "Input")
 	void Input_LookStick(const FInputActionValue& InputActionValue);
+	UFUNCTION(BlueprintNativeEvent, Category = "Input")
 	void Input_Crouch(const FInputActionValue& InputActionValue);
+	UFUNCTION(BlueprintNativeEvent, Category = "Input")
 	void Input_AutoRun(const FInputActionValue& InputActionValue);
 
 protected:

@@ -7,7 +7,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "Player/BasePlayerController.h"
 #include "Player/BasePlayerState.h"
-#include "Player/BaseLocalPlayer.h"
+// #include "Player/BaseLocalPlayer.h"
 #include "Character/BasePawnExtensionComponent.h"
 #include "Character/BasePawnData.h"
 #include "Character/BaseCharacter.h"
@@ -229,7 +229,8 @@ void UBaseHeroComponent::InitializePlayerInput(UInputComponent* PlayerInputCompo
 	const APlayerController* PC = GetController<APlayerController>();
 	check(PC);
 
-	const UBaseLocalPlayer* LP = Cast<UBaseLocalPlayer>(PC->GetLocalPlayer());
+	// const UBaseLocalPlayer* LP = Cast<UBaseLocalPlayer>(PC->GetLocalPlayer());
+	const ULocalPlayer* LP = PC->GetLocalPlayer();
 	check(LP);
 
 	UEnhancedInputLocalPlayerSubsystem* Subsystem = LP->GetSubsystem<UEnhancedInputLocalPlayerSubsystem>();
@@ -365,7 +366,7 @@ void UBaseHeroComponent::Input_AbilityInputTagReleased(FGameplayTag InputTag)
 	}
 }
 
-void UBaseHeroComponent::Input_Move(const FInputActionValue& InputActionValue)
+void UBaseHeroComponent::Input_Move_Implementation(const FInputActionValue& InputActionValue)
 {
 	APawn* Pawn = GetPawn<APawn>();
 	AController* Controller = Pawn ? Pawn->GetController() : nullptr;
@@ -395,7 +396,7 @@ void UBaseHeroComponent::Input_Move(const FInputActionValue& InputActionValue)
 	}
 }
 
-void UBaseHeroComponent::Input_LookMouse(const FInputActionValue& InputActionValue)
+void UBaseHeroComponent::Input_LookMouse_Implementation(const FInputActionValue& InputActionValue)
 {
 	APawn* Pawn = GetPawn<APawn>();
 
@@ -417,7 +418,7 @@ void UBaseHeroComponent::Input_LookMouse(const FInputActionValue& InputActionVal
 	}
 }
 
-void UBaseHeroComponent::Input_LookStick(const FInputActionValue& InputActionValue)
+void UBaseHeroComponent::Input_LookStick_Implementation(const FInputActionValue& InputActionValue)
 {
 	APawn* Pawn = GetPawn<APawn>();
 
@@ -442,7 +443,7 @@ void UBaseHeroComponent::Input_LookStick(const FInputActionValue& InputActionVal
 	}
 }
 
-void UBaseHeroComponent::Input_Crouch(const FInputActionValue& InputActionValue)
+void UBaseHeroComponent::Input_Crouch_Implementation(const FInputActionValue& InputActionValue)
 {
 	if (ABaseCharacter* Character = GetPawn<ABaseCharacter>())
 	{
@@ -450,7 +451,7 @@ void UBaseHeroComponent::Input_Crouch(const FInputActionValue& InputActionValue)
 	}
 }
 
-void UBaseHeroComponent::Input_AutoRun(const FInputActionValue& InputActionValue)
+void UBaseHeroComponent::Input_AutoRun_Implementation(const FInputActionValue& InputActionValue)
 {
 	if (APawn* Pawn = GetPawn<APawn>())
 	{
