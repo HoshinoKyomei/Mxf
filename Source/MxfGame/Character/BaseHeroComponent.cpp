@@ -16,7 +16,6 @@
 #include "Input/BaseInputComponent.h"
 #include "BaseGameplayTags.h"
 #include "Components/GameFrameworkComponentManager.h"
-#include "PlayerMappableInputConfig.h"
 #include "UserSettings/EnhancedInputUserSettings.h"
 #include "InputMappingContext.h"
 
@@ -282,6 +281,15 @@ void UBaseHeroComponent::InitializePlayerInput(UInputComponent* PlayerInputCompo
 					BaseIC->BindNativeAction(InputConfig, BaseGameplayTags::InputTag_Look_Stick, ETriggerEvent::Triggered, this, &ThisClass::Input_LookStick, /*bLogIfNotFound=*/ false);
 					BaseIC->BindNativeAction(InputConfig, BaseGameplayTags::InputTag_Crouch, ETriggerEvent::Triggered, this, &ThisClass::Input_Crouch, /*bLogIfNotFound=*/ false);
 					BaseIC->BindNativeAction(InputConfig, BaseGameplayTags::InputTag_AutoRun, ETriggerEvent::Triggered, this, &ThisClass::Input_AutoRun, /*bLogIfNotFound=*/ false);
+				
+					// 遍历执行表单数据初始化绑定
+					for (const UBaseInputSet* InputSet : PawnData->InputSets)
+					{
+						if (InputSet)
+						{
+							BaseIC->BindFunctionActions(PawnData->InputConfig, const_cast<APawn*>(Pawn), InputSet);
+						}
+					}
 				}
 			}
 		}

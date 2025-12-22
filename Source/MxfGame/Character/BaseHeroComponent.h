@@ -92,9 +92,6 @@ protected:
 	UPROPERTY(EditAnywhere)
 	TArray<FInputMappingContextAndPriority> DefaultInputMappings;
 
-	/** Spec handle for the last ability to set a camera mode. */
-	FGameplayAbilitySpecHandle AbilityCameraModeOwningSpecHandle;
-
 	/** True, when player input bindings have been applied, will never be true for non - players */
 	bool bReadyToBindInputs;
 };
