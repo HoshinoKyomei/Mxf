@@ -10,6 +10,7 @@ class APawn;
 class UBaseAbilitySet;
 class UBaseAbilityTagRelationshipMapping;
 class UBaseInputConfig;
+class UBaseInputSet;
 class UObject;
 
 /**
@@ -43,5 +44,9 @@ public:
 	// Input configuration used by player-controlled pawns to create input mappings and bind input actions.
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Base|Input")
 	TObjectPtr<UBaseInputConfig> InputConfig;
+	
+	// What mapping of input tags to use for actions taking by this pawn.
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Base|Input")
+	TArray<TObjectPtr<UBaseInputSet>> InputSets;
 	
 };

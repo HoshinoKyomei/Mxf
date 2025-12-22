@@ -136,6 +136,8 @@ Engine/Programs/UnrealBuildTool/*
 *.sdf
 *.p4ignore
 *.tongyiignore
+*.uproject.DotSettings.user
+DefaultEditorPerProjectUserSettings.ini
 
 Content/__ExternalActors__/*
 Content/__ExternalObjects__/*
@@ -152,3 +154,4 @@ Content/Variant_Shooter/*
 Content/Variant_SideScroller/*
 Plugins/TemplateFirstPerson/*
 Plugins/TemplateThirdPerson/*
+Plugins/TemplateResources/*

@@ -29,6 +29,24 @@ const UInputAction* UBaseInputConfig::FindNativeInputActionForTag(const FGamepla
 	return nullptr;
 }
 
+const UInputAction* UBaseInputConfig::FindFunctionInputActionForTag(const FGameplayTag& InputTag, bool bLogNotFound) const
+{
+	for (const FBaseInputAction& Action : FunctionInputActions)
+	{
+		if (Action.InputAction && (Action.InputTag == InputTag))
+		{
+			return Action.InputAction;
+		}
+	}
+
+	if (bLogNotFound)
+	{
+		UE_LOG(LogBase, Error, TEXT("Can't find FunctionInputAction for InputTag [%s] on InputConfig [%s]."), *InputTag.ToString(), *GetNameSafe(this));
+	}
+
+	return nullptr;
+}
+
 const UInputAction* UBaseInputConfig::FindAbilityInputActionForTag(const FGameplayTag& InputTag, bool bLogNotFound) const
 {
 	for (const FBaseInputAction& Action : AbilityInputActions)

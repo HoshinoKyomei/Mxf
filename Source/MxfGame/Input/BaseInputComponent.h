@@ -7,6 +7,7 @@
 
 #include "BaseInputComponent.generated.h"
 
+class UBaseInputSet;
 class UInputMappingContext;
 class UEnhancedInputLocalPlayerSubsystem;
 class UInputAction;
@@ -48,7 +49,11 @@ public:
 
 	template<class UserClass, typename FuncType>
 	void BindNativeAction(const UBaseInputConfig* InputConfig, const FGameplayTag& InputTag, ETriggerEvent TriggerEvent, UserClass* Object, FuncType Func, bool bLogIfNotFound);
-
+	
+	UFUNCTION(BlueprintCallable, Category = "Base|Input")
+	void BindFunctionActionForTag(const UBaseInputConfig* InputConfig, const FGameplayTag& InputTag, ETriggerEvent TriggerEvent, UObject* Object, FName Func, bool bLogIfNotFound);
+	void BindFunctionActions(const UBaseInputConfig* InputConfig, UObject* Object, const UBaseInputSet* InputSet);
+	
 	template<class UserClass, typename PressedFuncType, typename ReleasedFuncType>
 	void BindAbilityActions(const UBaseInputConfig* InputConfig, UserClass* Object, PressedFuncType PressedFunc, ReleasedFuncType ReleasedFunc, TArray<uint32>& BindHandles);
 
