@@ -25,8 +25,7 @@ public class MxfGame : ModuleRules
                 "GameplayAbilities",
                 "ModularGameplay",
                 "ModularGameplayActors",
-                "GameFeatures",
-                "ALSV4_CPP"
+                "GameFeatures"
 			}
 		);
 
