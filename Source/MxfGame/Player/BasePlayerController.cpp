@@ -7,6 +7,8 @@
 #include "BaseGameplayTags.h"
 #include "BasePlayerState.h"
 #include "AbilitySystem/BaseAbilitySystemComponent.h"
+#include "Engine/World.h"
+#include "GameFramework/Pawn.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(BasePlayerController)
 
