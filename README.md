@@ -6,12 +6,17 @@ Developed with Unreal Engine 5.7
 - Unreal
 	- GameplayAbilities
 	- GameplayCameras
+    - GameplayStateTree
 	- GameFeatures
 	- ModularGameplay
+    - CommonUI
 - Custom
 	- ModularGameplayActors
-    - TemplateResources
+    - CommonGame
+    - CommonUser
     - ToonCharacterShader
+    - GameAnimationSystem
+    - MannequinsAssetPack
 
 ## Frame structure
 - ModularActor
