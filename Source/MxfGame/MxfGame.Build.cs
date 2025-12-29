@@ -25,7 +25,8 @@ public class MxfGame : ModuleRules
                 "GameplayAbilities",
                 "ModularGameplay",
                 "ModularGameplayActors",
-                "GameFeatures"
+                "GameFeatures",
+                "Mover"
 			}
 		);
 
@@ -35,7 +36,7 @@ public class MxfGame : ModuleRules
                 "NetCore",
                 "CommonUI",
                 "CommonGame",
-                "CommonUser",
+                "CommonUser"
 			}
 		);
 
