@@ -279,6 +279,9 @@ void UBaseHeroComponent::InitializePlayerInput(UInputComponent* PlayerInputCompo
 					BaseIC->BindAbilityActions(InputConfig, this, &ThisClass::Input_AbilityInputTagPressed, &ThisClass::Input_AbilityInputTagReleased, /*out*/ BindHandles);
 
 					BaseIC->BindNativeAction(InputConfig, BaseGameplayTags::InputTag_Move, ETriggerEvent::Triggered, this, &ThisClass::Input_Move, /*bLogIfNotFound=*/ false);
+					BaseIC->BindNativeAction(InputConfig, BaseGameplayTags::InputTag_Move, ETriggerEvent::Completed, this, &ThisClass::Input_Move, /*bLogIfNotFound=*/ false);
+					// BaseIC->BindNativeAction(InputConfig, BaseGameplayTags::InputTag_Move, ETriggerEvent::Canceled, this, &ThisClass::Input_Move, /*bLogIfNotFound=*/ false);
+					
 					BaseIC->BindNativeAction(InputConfig, BaseGameplayTags::InputTag_Look_Mouse, ETriggerEvent::Triggered, this, &ThisClass::Input_LookMouse, /*bLogIfNotFound=*/ false);
 					BaseIC->BindNativeAction(InputConfig, BaseGameplayTags::InputTag_Look_Stick, ETriggerEvent::Triggered, this, &ThisClass::Input_LookStick, /*bLogIfNotFound=*/ false);
 					BaseIC->BindNativeAction(InputConfig, BaseGameplayTags::InputTag_Crouch, ETriggerEvent::Triggered, this, &ThisClass::Input_Crouch, /*bLogIfNotFound=*/ false);
