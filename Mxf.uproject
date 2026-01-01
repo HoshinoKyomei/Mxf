@@ -61,11 +61,6 @@
 			"Enabled": true
 		},
 		{
-			"Name": "Anchorpoint",
-			"Enabled": true,
-			"MarketplaceURL": "com.epicgames.launcher://ue/Fab/product/a1f11a3c-1b51-4417-9e2a-4ec1e60f7e67"
-		},
-		{
 			"Name": "PropertyHistory",
 			"Enabled": true,
 			"MarketplaceURL": "com.epicgames.launcher://ue/Fab/product/0edd8744-2384-4009-b997-e1ec7795a316"
@@ -76,6 +71,10 @@
 		},
 		{
 			"Name": "AbilitySystemGameFeatureActions",
+			"Enabled": true
+		},
+		{
+			"Name": "MoverExamples",
 			"Enabled": true
 		}
 	]

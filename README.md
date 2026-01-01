@@ -25,3 +25,21 @@ Developed with Unreal Engine 5.7
 - PawnComponent
   - BasePawnComponent
     - BP_BaseComponent(Blueprint)
+
+## 框架修改
+- Lyra
+  - PawnExt 
+    - RegisterInitState移至初始化组件
+  - Input
+    - BindAtion支持蓝图
+      - 添加FunctionInputActions
+  - PawnData
+    - 起始位置默认位于PlayerState
+    - 添加InputSet
+  - Character切换至MoverPawn
+    - 使用Mover的GameplayTags替代原移动模式Tags
+- GASP_Mover
+  - 解绑IA输入
+    - 可通过重载支持InputActionValue
+  - 添加自定义移动模式Cover
+    - 修改输入代理接口
