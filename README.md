@@ -25,3 +25,6 @@ Developed with Unreal Engine 5.7
 - PawnComponent
   - BasePawnComponent
     - BP_BaseComponent(Blueprint)
+   
+---
+扩展InputSet，InputActionEvent可使用数据资产绑定蓝图中编写的函数/事件至输入映射
