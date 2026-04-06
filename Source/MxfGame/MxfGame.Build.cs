@@ -26,7 +26,7 @@ public class MxfGame : ModuleRules
                 "ModularGameplay",
                 "ModularGameplayActors",
                 "GameFeatures",
-                "Mover"
+                "GameAnimationSystem"
 			}
 		);
 
